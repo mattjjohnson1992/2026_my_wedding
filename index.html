@@ -5,14 +5,153 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matthew & Anastasia - September 12, 2026 - Villa Bettoni</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;700;900&family=Montserrat:wght@300;400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;0,6..96,800;0,6..96,900;1,6..96,400;1,6..96,500;1,6..96,600&family=Inter:wght@200;300;400;500;600&display=swap');
         
         body {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #f8f6f0 0%, #e8e2d5 100%);
+            background: linear-gradient(135deg, #fefcf7 0%, #f5f3ee 50%, #e8e5dd 100%);
             color: #1a1a1a;
+            overflow-x: hidden;
+        }
+
+        /* Video Intro Styles */
+        .video-intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 1000;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease-out;
+        }
+
+        .video-intro.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .video-intro iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.1) 0%,
+                rgba(0, 0, 0, 0.3) 100%
+            );
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-end;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        .skip-button {
+            background: rgba(254, 252, 247, 0.9);
+            color: #1a1a1a;
+            border: 1px solid rgba(139, 125, 107, 0.3);
+            padding: 0.8rem 1.5rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .skip-button:hover {
+            background: rgba(254, 252, 247, 1);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .video-fade-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30%;
+            background: linear-gradient(
+                to top,
+                rgba(26, 26, 26, 0.8) 0%,
+                transparent 100%
+            );
+            pointer-events: none;
+        }
+
+        .video-fallback {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                rgba(26, 26, 26, 0.9) 0%,
+                rgba(41, 59, 77, 0.85) 35%,
+                rgba(26, 26, 26, 0.95) 100%
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fefcf7;
+        }
+
+        .video-fallback-content h1 {
+            font-family: 'Bodoni Moda', serif;
+            font-size: 3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #fefcf7;
+        }
+
+        .video-fallback-content p {
+            font-size: 1.1rem;
+            color: #8b7d6b;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 300;
+        }
+
+        /* Hide welcome page initially */
+        .welcome-page.hidden {
+            display: none;
+        }
+
+        /* Subtle animation keyframes */
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
         }
 
         .welcome-page {
@@ -20,41 +159,68 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(26, 26, 26, 0.8)), 
-                        radial-gradient(circle at center, #d4af37 0%, #b8860b 30%, #1a1a1a 70%);
+            position: relative;
+            background: linear-gradient(
+                135deg, 
+                rgba(26, 26, 26, 0.85) 0%, 
+                rgba(41, 59, 77, 0.75) 30%,
+                rgba(26, 26, 26, 0.9) 100%
+            ), 
+            radial-gradient(ellipse at 30% 70%, rgba(139, 125, 107, 0.15) 0%, transparent 50%),
+            linear-gradient(180deg, #1a1a1a 0%, #293b4d 100%);
         }
 
         .welcome-content {
             max-width: 600px;
-            padding: 3rem;
-            background: rgba(248, 246, 240, 0.95);
-            border: 3px solid #d4af37;
+            padding: 4rem 3rem;
+            background: rgba(254, 252, 247, 0.97);
+            border: 1px solid rgba(139, 125, 107, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 8px 25px rgba(0, 0, 0, 0.15);
             text-align: center;
             color: #1a1a1a;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 1.2s ease-out;
+            position: relative;
+        }
+
+        .welcome-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(139, 125, 107, 0.6), transparent);
         }
 
         .welcome-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 3rem;
-            font-weight: 900;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
+            font-family: 'Bodoni Moda', serif;
+            font-size: 3.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: none;
+            letter-spacing: 1px;
+            line-height: 1.2;
+            color: #1a1a1a;
         }
 
         .welcome-subtitle {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            color: #d4af37;
-            margin-bottom: 0.5rem;
+            font-family: 'Bodoni Moda', serif;
+            font-style: italic;
+            font-size: 1.6rem;
+            color: #8b7d6b;
+            margin-bottom: 0.3rem;
+            font-weight: 400;
         }
 
         .welcome-venue {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             color: #666;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            font-weight: 300;
         }
 
         .form-group {
@@ -71,26 +237,62 @@
 
         .form-group input {
             width: 100%;
-            padding: 1rem;
-            border: 2px solid #d4af37;
+            padding: 1.2rem;
+            border: 1px solid rgba(139, 125, 107, 0.3);
+            background: rgba(254, 252, 247, 0.9);
             font-size: 1rem;
             text-align: center;
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            transition: all 0.3s ease;
+            color: #1a1a1a;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: rgba(139, 125, 107, 0.6);
+            background: rgba(254, 252, 247, 1);
+            box-shadow: 0 2px 12px rgba(139, 125, 107, 0.15);
         }
 
         .access-button {
-            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
-            color: #1a1a1a;
+            background: linear-gradient(135deg, rgba(139, 125, 107, 0.9) 0%, rgba(139, 125, 107, 1) 100%);
+            color: #fefcf7;
             padding: 1.5rem 3rem;
-            border: 2px solid #d4af37;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
-            font-weight: 600;
+            border: 1px solid rgba(139, 125, 107, 0.4);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 400;
             text-transform: uppercase;
             letter-spacing: 2px;
             cursor: pointer;
             width: 100%;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .access-button:hover {
+            background: linear-gradient(135deg, rgba(139, 125, 107, 1) 0%, rgba(169, 155, 137, 1) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 125, 107, 0.3);
+        }
+
+        .access-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .access-button:hover::before {
+            left: 100%;
         }
 
         .welcome-error {
@@ -114,8 +316,8 @@
         }
 
         .admin-section button {
-            background: #d4af37;
-            color: #1a1a1a;
+            background: #8b7d6b;
+            color: #fefcf7;
             border: none;
             padding: 0.5rem 1rem;
             cursor: pointer;
@@ -128,59 +330,83 @@
         }
 
         .std-header {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(26, 26, 26, 0.8)), 
-                        radial-gradient(circle at center, #d4af37 0%, #b8860b 30%, #1a1a1a 70%);
-            min-height: 60vh;
+            background: linear-gradient(
+                135deg,
+                rgba(26, 26, 26, 0.9) 0%,
+                rgba(41, 59, 77, 0.85) 35%,
+                rgba(26, 26, 26, 0.95) 100%
+            ),
+            radial-gradient(ellipse at 20% 80%, rgba(139, 125, 107, 0.1) 0%, transparent 60%);
+            min-height: 70vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            color: #f8f6f0;
+            color: #fefcf7;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .std-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="0.5" fill="%23ffffff" opacity="0.03"/><circle cx="25" cy="25" r="0.3" fill="%23ffffff" opacity="0.02"/><circle cx="75" cy="75" r="0.4" fill="%23ffffff" opacity="0.025"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            animation: gentleFloat 8s ease-in-out infinite;
         }
 
         .std-content {
             max-width: 800px;
-            padding: 3rem 2rem;
-            background: rgba(248, 246, 240, 0.95);
-            border: 3px solid #d4af37;
+            padding: 4rem 3rem;
+            background: rgba(254, 252, 247, 0.97);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(139, 125, 107, 0.2);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3), 0 10px 30px rgba(0, 0, 0, 0.2);
             color: #1a1a1a;
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1.5s ease-out 0.3s both;
         }
 
         .std-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            font-weight: 400;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 300;
             margin-bottom: 2rem;
-            color: #d4af37;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-        }
-
-        .std-names {
-            font-family: 'Playfair Display', serif;
-            font-size: 4rem;
-            font-weight: 900;
-            margin-bottom: 1rem;
-            color: #1a1a1a;
+            color: #8b7d6b;
             text-transform: uppercase;
             letter-spacing: 4px;
         }
 
+        .std-names {
+            font-family: 'Bodoni Moda', serif;
+            font-size: 4.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #1a1a1a;
+            text-transform: none;
+            letter-spacing: 2px;
+            line-height: 1.1;
+        }
+
         .std-date {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            font-weight: 400;
-            margin-bottom: 0.5rem;
-            color: #d4af37;
+            font-family: 'Bodoni Moda', serif;
             font-style: italic;
+            font-size: 2.2rem;
+            font-weight: 400;
+            margin-bottom: 0.8rem;
+            color: #8b7d6b;
         }
 
         .std-location {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
+            font-size: 1rem;
+            margin-bottom: 2.5rem;
             color: #666;
             font-weight: 300;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-transform: uppercase;
         }
 
@@ -191,34 +417,85 @@
             color: #555;
         }
 
-        .countdown-display {
-            background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
-            padding: 1.5rem 2rem;
-            border: 2px solid #d4af37;
-            color: #f8f6f0;
+        .event-details {
+            margin: 2.5rem 0;
             text-align: center;
-            margin: 2rem auto;
-            max-width: 300px;
+        }
+
+        .details-intro {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #666;
+            font-weight: 300;
+            max-width: 500px;
+            margin: 0 auto;
+            font-style: normal;
+        }
+
+        .details-intro em {
+            font-family: 'Bodoni Moda', serif;
+            font-style: italic;
+            color: #8b7d6b;
+            font-weight: 400;
+        }
+
+        .countdown-display {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(41, 59, 77, 0.9) 100%);
+            padding: 2rem;
+            border: 1px solid rgba(139, 125, 107, 0.3);
+            color: #fefcf7;
+            text-align: center;
+            margin: 3rem auto;
+            max-width: 280px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .countdown-display::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(139, 125, 107, 0.5), transparent);
         }
 
         .countdown-number {
-            font-family: 'Playfair Display', serif;
-            font-size: 3rem;
-            font-weight: 700;
+            font-family: 'Bodoni Moda', serif;
+            font-size: 3.5rem;
+            font-weight: 600;
             display: block;
-            color: #d4af37;
+            color: #fefcf7;
+            line-height: 1;
+            margin-bottom: 0.5rem;
         }
 
         .countdown-label {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             font-weight: 300;
+            color: rgba(254, 252, 247, 0.8);
         }
 
         .response-section {
-            padding: 4rem 2rem;
-            background: #f8f6f0;
+            padding: 5rem 2rem;
+            background: linear-gradient(180deg, #fefcf7 0%, #f8f5ef 100%);
+            position: relative;
+        }
+
+        .response-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(139, 125, 107, 0.3), transparent);
         }
 
         .response-container {
@@ -227,34 +504,42 @@
         }
 
         .response-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
+            font-family: 'Bodoni Moda', serif;
+            font-size: 2.8rem;
             text-align: center;
             margin-bottom: 1rem;
             color: #1a1a1a;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-weight: 500;
+            text-transform: none;
+            letter-spacing: 1px;
+            line-height: 1.2;
         }
 
         .response-subtitle {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
             color: #666;
-            font-size: 1.1rem;
+            font-size: 1rem;
             line-height: 1.6;
+            font-weight: 300;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .std-form {
-            background: white;
-            padding: 3rem;
-            border: 2px solid #d4af37;
+            background: rgba(254, 252, 247, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 4rem 3rem;
+            border: 1px solid rgba(139, 125, 107, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1), 0 8px 25px rgba(0, 0, 0, 0.05);
+            position: relative;
         }
 
         .form-section-std {
             margin-bottom: 3rem;
             padding-bottom: 2rem;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            border-bottom: 1px solid rgba(139, 125, 107, 0.15);
         }
 
         .form-section-std:last-child {
@@ -262,48 +547,62 @@
         }
 
         .form-section-title-std {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
+            font-family: 'Bodoni Moda', serif;
+            font-size: 1.8rem;
             color: #1a1a1a;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 600;
+            margin-bottom: 2rem;
+            text-transform: none;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+            line-height: 1.3;
         }
 
         .form-group-std {
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .form-group-std label {
             display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
+            margin-bottom: 0.8rem;
+            font-weight: 400;
             color: #1a1a1a;
             font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .form-group-std input,
         .form-group-std textarea {
             width: 100%;
-            padding: 1rem;
-            border: 2px solid #d4af37;
-            background: white;
+            padding: 1.3rem;
+            border: 1px solid rgba(139, 125, 107, 0.25);
+            background: rgba(254, 252, 247, 0.7);
             font-size: 1rem;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
             color: #1a1a1a;
             box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .form-group-std input:focus,
+        .form-group-std textarea:focus {
+            outline: none;
+            border-color: rgba(139, 125, 107, 0.5);
+            background: rgba(254, 252, 247, 0.95);
+            box-shadow: 0 4px 15px rgba(139, 125, 107, 0.1);
         }
 
         .form-group-std textarea {
             resize: vertical;
-            min-height: 100px;
+            min-height: 120px;
+            line-height: 1.6;
         }
 
         .radio-group-std, .checkbox-group-std {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.8rem;
         }
 
         .radio-label-std, .checkbox-label-std {
@@ -312,14 +611,18 @@
             cursor: pointer;
             font-size: 1rem;
             color: #1a1a1a;
-            padding: 1rem;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            background: #fafafa;
+            padding: 1.2rem 1.5rem;
+            border: 1px solid rgba(139, 125, 107, 0.2);
+            background: rgba(254, 252, 247, 0.5);
+            transition: all 0.3s ease;
+            font-weight: 300;
         }
 
         .radio-label-std:hover, .checkbox-label-std:hover {
-            border-color: #d4af37;
-            background: white;
+            border-color: rgba(139, 125, 107, 0.4);
+            background: rgba(254, 252, 247, 0.8);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(139, 125, 107, 0.1);
         }
 
         .radio-label-std input[type="radio"],
@@ -329,71 +632,136 @@
         }
 
         .submit-button-std {
-            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
-            color: #1a1a1a;
-            padding: 1.5rem 3rem;
-            border: 2px solid #d4af37;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
-            font-weight: 600;
+            background: linear-gradient(135deg, rgba(139, 125, 107, 0.9) 0%, rgba(139, 125, 107, 1) 100%);
+            color: #fefcf7;
+            padding: 1.6rem 4rem;
+            border: 1px solid rgba(139, 125, 107, 0.4);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
             text-transform: uppercase;
             letter-spacing: 2px;
             cursor: pointer;
             width: 100%;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .submit-button-std:hover {
-            background: linear-gradient(135deg, #f4d03f 0%, #d4af37 100%);
+            background: linear-gradient(135deg, rgba(139, 125, 107, 1) 0%, rgba(169, 155, 137, 1) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(139, 125, 107, 0.25);
+        }
+
+        .submit-button-std::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .submit-button-std:hover::before {
+            left: 100%;
         }
 
         .form-submit-std {
             text-align: center;
-            margin-top: 2rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(139, 125, 107, 0.15);
         }
 
         .form-note-std {
             color: #666;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-style: italic;
+            font-weight: 300;
+            line-height: 1.5;
         }
 
         .std-footer {
-            background: #1a1a1a;
-            color: #f8f6f0;
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(41, 59, 77, 0.9) 100%);
+            color: #fefcf7;
             text-align: center;
-            padding: 2rem;
+            padding: 3rem 2rem;
+            position: relative;
+        }
+
+        .std-footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(139, 125, 107, 0.4), transparent);
         }
 
         .logout-btn {
-            background: #d4af37;
-            color: #1a1a1a;
-            border: none;
+            background: rgba(139, 125, 107, 0.9);
+            color: #fefcf7;
+            border: 1px solid rgba(139, 125, 107, 0.5);
             padding: 1rem 2rem;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 400;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
         }
 
         .logout-btn:hover {
-            background: #f4d03f;
+            background: rgba(139, 125, 107, 1);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(139, 125, 107, 0.2);
         }
 
         .dietary-guest-section {
-            margin-bottom: 2rem;
-            padding: 1.5rem;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            background: #fafafa;
+            margin-bottom: 2.5rem;
+            padding: 2rem;
+            border: 1px solid rgba(139, 125, 107, 0.2);
+            background: rgba(254, 252, 247, 0.3);
+            backdrop-filter: blur(5px);
         }
 
         .dietary-guest-title {
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #d4af37;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            color: #8b7d6b;
             font-size: 1.1rem;
+            font-family: 'Bodoni Moda', serif;
+            letter-spacing: 0.5px;
         }
     </style>
 </head>
 <body>
+    <div id="videoIntro" class="video-intro">
+        <iframe id="introVideo" 
+                src="https://player.vimeo.com/video/1112259429?autoplay=1&muted=1&loop=1&background=1&controls=0"
+                frameborder="0" 
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen>
+        </iframe>
+        <div class="video-fallback" id="videoFallback" style="display: none;">
+            <div class="video-fallback-content">
+                <h1>Matthew & Anastasia</h1>
+                <p>Villa Bettoni • Lake Garda, Italy</p>
+                <p style="font-size: 0.9rem; margin-top: 2rem; opacity: 0.7;">Loading celebration preview...</p>
+            </div>
+        </div>
+        <div class="video-overlay">
+            <button id="skipVideo" class="skip-button">Skip</button>
+        </div>
+        <div class="video-fade-overlay"></div>
+    </div>
+
     <div id="welcomePage" class="welcome-page">
         <div class="welcome-content">
             <h1 class="welcome-title">Matthew & Anastasia</h1>
@@ -421,6 +789,10 @@
                 <div class="std-message">
                     <p>We're getting married in one of the world's most beautiful locations!</p>
                     <p>More details about accommodations, travel, and celebrations to follow.</p>
+                </div>
+                
+                <div class="event-details">
+                    <p class="details-intro">Join us for an elegant <em>black tie</em> celebration designed as an intimate, adult-only evening for our closest family and friends.</p>
                 </div>
                 <div class="countdown-display">
                     <span class="countdown-number" id="daysCounter">000</span>
@@ -598,11 +970,11 @@
                 <div id="responseSubmitted" style="display: none;" class="std-form">
                     <div style="text-align: center; padding: 3rem 2rem;">
                         <div style="font-size: 4rem; color: #28a745; margin-bottom: 2rem;">✓</div>
-                        <h2 style="color: #28a745; margin-bottom: 2rem; font-family: 'Playfair Display', serif;">Response Submitted Successfully!</h2>
+                        <h2 style="color: #28a745; margin-bottom: 2rem; font-family: 'Bodoni Moda', serif;">Response Submitted Successfully!</h2>
                         <p style="font-size: 1.1rem; color: #666; margin-bottom: 2rem; line-height: 1.6;">
                             Thank you for your response! We have received your information and will be in touch with more details about our Lake Garda celebration soon.
                         </p>
-                        <div style="background: #f8f9fa; padding: 2rem; margin: 2rem 0; border-left: 4px solid #d4af37;">
+                        <div style="background: #f8f9fa; padding: 2rem; margin: 2rem 0; border-left: 4px solid #8b7d6b;">
                             <p style="color: #555; margin-bottom: 1rem;"><strong>What's next?</strong></p>
                             <p style="color: #666; font-size: 0.95rem; line-height: 1.6;">
                                 • Formal invitations with venue details and timings will follow<br>
@@ -610,7 +982,7 @@
                                 • You can log back in anytime to view or update your response
                             </p>
                         </div>
-                        <button onclick="showMyResponse()" style="background: #d4af37; color: #1a1a1a; border: none; padding: 1rem 2rem; cursor: pointer; font-weight: 600; margin-right: 1rem; margin-bottom: 1rem;">
+                        <button onclick="showMyResponse()" style="background: #8b7d6b; color: #fefcf7; border: none; padding: 1rem 2rem; cursor: pointer; font-weight: 600; margin-right: 1rem; margin-bottom: 1rem;">
                             View My Response
                         </button>
                         <button onclick="logout()" style="background: #666; color: white; border: none; padding: 1rem 2rem; cursor: pointer; font-weight: 600; margin-bottom: 1rem;">
@@ -621,11 +993,11 @@
 
                 <div id="viewResponse" style="display: none;" class="std-form">
                     <div style="padding: 2rem;">
-                        <h2 style="color: #d4af37; margin-bottom: 2rem; font-family: 'Playfair Display', serif; text-align: center;">Your Current Response</h2>
-                        <div id="responseDetails" style="background: #f8f9fa; padding: 2rem; border-left: 4px solid #d4af37; margin-bottom: 2rem;">
+                        <h2 style="color: #8b7d6b; margin-bottom: 2rem; font-family: 'Bodoni Moda', serif; text-align: center;">Your Current Response</h2>
+                        <div id="responseDetails" style="background: #f8f9fa; padding: 2rem; border-left: 4px solid #8b7d6b; margin-bottom: 2rem;">
                         </div>
                         <div style="text-align: center;">
-                            <button onclick="editResponse()" style="background: #d4af37; color: #1a1a1a; border: none; padding: 1rem 2rem; cursor: pointer; font-weight: 600; margin-right: 1rem;">
+                            <button onclick="editResponse()" style="background: #8b7d6b; color: #fefcf7; border: none; padding: 1rem 2rem; cursor: pointer; font-weight: 600; margin-right: 1rem;">
                                 Edit Response
                             </button>
                             <button onclick="showSubmittedState()" style="background: #666; color: white; border: none; padding: 1rem 2rem; cursor: pointer; font-weight: 600;">
@@ -657,19 +1029,52 @@
         var savedResponse = null;
 
         window.onload = function() {
-            // Check if user is admin based on email they enter
-            checkForAdminAccess();
+            // Initially hide the welcome page
+            document.getElementById('welcomePage').classList.add('hidden');
             
+            // Setup video intro
+            setupVideoIntro();
+            
+            checkForAdminAccess();
             document.getElementById('uploadGuestList').onclick = handleFileUpload;
             document.getElementById('accessButton').onclick = handleEmailAccess;
         };
 
+        function setupVideoIntro() {
+            var videoIntro = document.getElementById('videoIntro');
+            var skipButton = document.getElementById('skipVideo');
+            
+            // Skip video function
+            function skipToWelcome() {
+                videoIntro.classList.add('fade-out');
+                setTimeout(function() {
+                    videoIntro.style.display = 'none';
+                    document.getElementById('welcomePage').classList.remove('hidden');
+                    document.getElementById('welcomePage').style.display = 'flex';
+                }, 1000);
+            }
+            
+            // Skip button click
+            skipButton.onclick = skipToWelcome;
+            
+            // Auto-advance after 10 seconds (your video length)
+            setTimeout(function() {
+                skipToWelcome();
+            }, 10000);
+            
+            // Allow manual skip with keyboard
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' || e.key === ' ') {
+                    skipToWelcome();
+                }
+            });
+        }
+
         function checkForAdminAccess() {
-            // Only show admin section if accessing with specific parameter
             var urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('admin') === 'true') {
                 var adminEmail = prompt('Enter admin email to access guest list management:');
-                if (adminEmail === 'matt.j.johnson1992@gmail.com' || adminEmail === '9339000@gmail.com' || adminEmail === 'mj.anastasia.johnson@gmail.com') {
+                if (adminEmail === 'matt.j.johnson1992@gmail.com' || adminEmail === 'anastasia-email@gmail.com') {
                     document.getElementById('adminSection').style.display = 'block';
                     alert('Admin access granted');
                 } else {
@@ -730,28 +1135,23 @@
         function setupSaveTheDatePage() {
             document.getElementById('primaryGuestSTD').value = currentGuest.Primary_Name || '';
             
-            // Check if this guest has a second name in the Excel OR if they have a plus-one
             if (currentGuest.Second_Name) {
-                // They have a named second guest (like a spouse)
                 document.getElementById('secondGuestSTD').style.display = 'block';
                 document.getElementById('secondGuestNameSTD').value = currentGuest.Second_Name;
                 document.getElementById('secondGuestNameSTD').placeholder = 'Enter your partner\'s preferred name';
                 document.getElementById('secondGuestDietarySection').style.display = 'block';
                 updateDietaryLabels();
             } else if (currentGuest.Has_Plus_One === 'Yes' || currentGuest.Has_Plus_One === true) {
-                // They have a plus-one but no pre-filled name
                 document.getElementById('secondGuestSTD').style.display = 'block';
                 document.getElementById('secondGuestNameSTD').value = '';
                 document.getElementById('secondGuestNameSTD').placeholder = 'Please include name of your plus one';
                 document.getElementById('secondGuestDietarySection').style.display = 'block';
                 updateDietaryLabels();
             } else {
-                // Single guest, no plus-one
                 document.getElementById('secondGuestSTD').style.display = 'none';
                 document.getElementById('secondGuestDietarySection').style.display = 'none';
             }
             
-            // Always update dietary labels after setting up the form
             updateDietaryLabels();
             
             if (savedResponse) {
@@ -771,16 +1171,13 @@
             var primaryTitle = document.getElementById('primaryDietaryTitle');
             
             if (primaryTitle) {
-                // Check if this is a single guest (no second guest section visible)
                 if (document.getElementById('secondGuestSTD').style.display === 'none') {
-                    // Single guest - use just their name
                     if (primaryName && primaryName.trim() !== '') {
                         primaryTitle.textContent = 'Dietary requirements for ' + primaryName + ':';
                     } else {
                         primaryTitle.textContent = 'Your dietary requirements:';
                     }
                 } else {
-                    // Multiple guests - use their name
                     if (primaryName && primaryName.trim() !== '') {
                         primaryTitle.textContent = 'Dietary requirements for ' + primaryName + ':';
                     } else {
@@ -789,7 +1186,6 @@
                 }
             }
             
-            // Handle second guest label if visible
             if (document.getElementById('secondGuestSTD').style.display !== 'none') {
                 var secondName = document.getElementById('secondGuestNameSTD').value;
                 var secondTitle = document.getElementById('secondDietaryTitle');
@@ -837,7 +1233,6 @@
                 };
             }
 
-            // Primary guest dietary handlers
             var primaryNoneCheckbox = document.getElementById('dietaryPrimaryNone');
             if (primaryNoneCheckbox) {
                 primaryNoneCheckbox.onchange = function() {
@@ -875,7 +1270,6 @@
                 };
             }
 
-            // Second guest dietary handlers
             var secondNoneCheckbox = document.getElementById('dietarySecondNone');
             if (secondNoneCheckbox) {
                 secondNoneCheckbox.onchange = function() {
@@ -913,7 +1307,6 @@
                 };
             }
 
-            // Update labels when names change
             document.getElementById('primaryGuestSTD').onkeyup = updateDietaryLabels;
             var secondGuestField = document.getElementById('secondGuestNameSTD');
             if (secondGuestField) {
@@ -947,7 +1340,6 @@
                     
                     responseData.travelQuestions = document.getElementById('travelQuestions').value;
                     
-                    // Collect primary guest dietary
                     var selectedPrimaryDietary = [];
                     var primaryDietaryCheckboxes = document.querySelectorAll('input[name="dietaryPrimary"]:checked');
                     for (var i = 0; i < primaryDietaryCheckboxes.length; i++) {
@@ -959,7 +1351,6 @@
                         responseData.primaryOtherDietary = document.getElementById('otherDietaryPrimary').value;
                     }
 
-                    // Collect second guest dietary if applicable
                     if (document.getElementById('secondGuestDietarySection').style.display !== 'none') {
                         var selectedSecondDietary = [];
                         var secondDietaryCheckboxes = document.querySelectorAll('input[name="dietarySecond"]:checked');
