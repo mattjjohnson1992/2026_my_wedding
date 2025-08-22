@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matthew & Anastasia - September 12, 2026 - Villa Bettoni</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;700;900&family=Montserrat:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f8f6f0 0%, #e8e2d5 100%);
+            color: #1a1a1a;
+        }
+
+        .welcome-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(26, 26, 26, 0.8)), 
+                        radial-gradient(circle at center, #d4af37 0%, #b8860b 30%, #1a1a1a 70%);
+        }
+
+        .welcome-content {
+            max-width: 600px;
+            padding: 3rem;
+            background: rgba(248, 246, 240, 0.95);
+            border: 3px solid #d4af37;
+            text-align: center;
+            color: #1a1a1a;
+        }
+
+        .welcome-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .welcome-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #d4af37;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-venue {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .form-group {
+            margin: 1.5rem 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #d4af37;
+            font-size: 1rem;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .access-button {
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            color: #1a1a1a;
+            padding: 1.5rem 3rem;
+            border: 2px solid #d4af37;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .welcome-error {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .admin-section {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 1rem;
+            max-width: 300px;
+        }
+
+        .admin-section button {
+            background: #d4af37;
+            color: #1a1a1a;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+
+        .main-website {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .std-header {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(26, 26, 26, 0.8)), 
+                        radial-gradient(circle at center, #d4af37 0%, #b8860b 30%, #1a1a1a 70%);
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #f8f6f0;
+        }
+
+        .std-content {
+            max-width: 800px;
+            padding: 3rem 2rem;
+            background: rgba(248, 246, 240, 0.95);
+            border: 3px solid #d4af37;
+            color: #1a1a1a;
+        }
+
+        .std-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+            color: #d4af37;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .std-names {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        .std-date {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+            color: #d4af37;
+            font-style: italic;
+        }
+
+        .std-location {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: #666;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .std-message {
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .countdown-display {
+            background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
+            padding: 1.5rem 2rem;
+            border: 2px solid #d4af37;
+            color: #f8f6f0;
+            text-align: center;
+            margin: 2rem auto;
+            max-width: 300px;
+        }
+
+        .countdown-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            display: block;
+            color: #d4af37;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 300;
+        }
+
+        .response-section {
+            padding: 4rem 2rem;
+            background: #f8f6f0;
+        }
+
+        .response-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .response-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .response-subtitle {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .std-form {
+            background: white;
+            padding: 3rem;
+            border: 2px solid #d4af37;
+        }
+
+        .form-section-std {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .form-section-std:last-child {
+            border-bottom: none;
+        }
+
+        .form-section-title-std {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .form-group-std {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group-std label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 0.9rem;
+        }
+
+        .form-group-std input,
+        .form-group-std textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #d4af37;
+            background: white;
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+            color: #1a1a1a;
+            box-sizing: border-box;
+        }
+
+        .form-group-std textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .radio-group-std, .checkbox-group-std {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .radio-label-std, .checkbox-label-std {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #1a1a1a;
+            padding: 1rem;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: #fafafa;
+        }
+
+        .radio-label-std:hover, .checkbox-label-std:hover {
+            border-color: #d4af37;
+            background: white;
+        }
+
+        .radio-label-std input[type="radio"],
+        .checkbox-label-std input[type="checkbox"] {
+            margin-right: 1rem;
+            width: auto;
+        }
+
+        .submit-button-std {
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            color: #1a1a1a;
+            padding: 1.5rem 3rem;
+            border: 2px solid #d4af37;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .submit-button-std:hover {
+            background: linear-gradient(135deg, #f4d03f 0%, #d4af37 100%);
+        }
+
+        .form-submit-std {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .form-note-std {
+            color: #666;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .std-footer {
+            background: #1a1a1a;
+            color: #f8f6f0;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .logout-btn {
+            background: #d4af37;
+            color: #1a1a1a;
+            border: none;
+            padding: 1rem 2rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: #f4d03f;
+        }
+
+        .dietary-guest-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: #fafafa;
+        }
+
+        .dietary-guest-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #d4af37;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="welcomePage" class="welcome-page">
+        <div class="welcome-content">
+            <h1 class="welcome-title">Matthew & Anastasia</h1>
+            <p class="welcome-subtitle">September 12, 2026</p>
+            <p class="welcome-venue">Villa Bettoni • Lake Garda, Italy</p>
+            <p>Welcome! Please enter your invitation email to continue.</p>
+            <div class="form-group">
+                <label for="accessEmail">Email Address</label>
+                <input type="email" id="accessEmail" placeholder="Enter your invitation email">
+            </div>
+            <button type="button" id="accessButton" class="access-button">Enter Wedding Site</button>
+            <div id="welcomeError" class="welcome-error">
+                <p><strong>Email not found.</strong> Please contact us if you need help.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="mainWebsite" class="main-website">
+        <div class="std-header">
+            <div class="std-content">
+                <h1 class="std-title">Save the Date</h1>
+                <div class="std-names">Matthew & Anastasia</div>
+                <div class="std-date">September 12, 2026</div>
+                <div class="std-location">Lake Garda, Italy</div>
+                <div class="std-message">
+                    <p>We're getting married in one of the world's most beautiful locations!</p>
+                    <p>More details about accommodations, travel, and celebrations to follow.</p>
+                </div>
+                <div class="countdown-display">
+                    <span class="countdown-number" id="daysCounter">000</span>
+                    <span class="countdown-label">Days to Go</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="response-section">
+            <div class="response-container">
+                <h2 class="response-title">Let Us Know Your Plans</h2>
+                <p class="response-subtitle">
+                    Help us plan by sharing your initial thoughts. Formal invitations with full details will follow.
+                </p>
+
+                <div class="std-form" id="responseForm">
+                    <div class="form-section-std">
+                        <h3 class="form-section-title-std">Guest Information</h3>
+                        <div class="form-group-std">
+                            <label>Primary Guest</label>
+                            <input type="text" id="primaryGuestSTD" placeholder="Enter your preferred name">
+                        </div>
+                        <div class="form-group-std" id="secondGuestSTD" style="display: none;">
+                            <label>Second Guest</label>
+                            <input type="text" id="secondGuestNameSTD" placeholder="Enter your partner's preferred name">
+                        </div>
+                    </div>
+
+                    <div class="form-section-std">
+                        <h3 class="form-section-title-std">Initial Response</h3>
+                        <div class="radio-group-std">
+                            <label class="radio-label-std">
+                                <input type="radio" name="initialResponse" value="planning-to-attend">
+                                Planning to attend - can't wait!
+                            </label>
+                            <label class="radio-label-std">
+                                <input type="radio" name="initialResponse" value="cannot-attend">
+                                Unfortunately cannot attend
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-section-std" id="travelSection" style="display: none;">
+                        <h3 class="form-section-title-std">Travel & Accommodation</h3>
+                        <div class="form-group-std">
+                            <label>Have you ever been to Lake Garda before?</label>
+                            <div class="radio-group-std">
+                                <label class="radio-label-std">
+                                    <input type="radio" name="visitedBefore" value="yes">
+                                    Yes, we've been before
+                                </label>
+                                <label class="radio-label-std">
+                                    <input type="radio" name="visitedBefore" value="no">
+                                    No, this will be our first time
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group-std">
+                            <label>Any travel concerns or questions?</label>
+                            <textarea id="travelQuestions" name="travelQuestions" 
+                                      placeholder="Let us know if you have any questions about traveling to Lake Garda..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section-std" id="dietarySection" style="display: none;">
+                        <h3 class="form-section-title-std">Special Requirements & Dietary Restrictions</h3>
+                        
+                        <!-- Primary Guest Dietary -->
+                        <div class="dietary-guest-section">
+                            <div class="dietary-guest-title" id="primaryDietaryTitle">Dietary requirements for primary guest:</div>
+                            <div class="checkbox-group-std">
+                                <label class="checkbox-label-std">
+                                    <input type="checkbox" name="dietaryPrimary" value="none" id="dietaryPrimaryNone">
+                                    None
+                                </label>
+                                <label class="checkbox-label-std">
+                                    <input type="checkbox" name="dietaryPrimary" value="gluten-free">
+                                    Gluten Free
+                                </label>
+                                <label class="checkbox-label-std">
+                                    <input type="checkbox" name="dietaryPrimary" value="dairy-free">
+                                    Dairy Free / Lactose Intolerant
+                                </label>
+                                <label class="checkbox-label-std">
+                                    <input type="checkbox" name="dietaryPrimary" value="nut-allergy">
+                                    Nut Allergy (Peanuts / Tree Nuts)
+                                </label>
+                                <label class="checkbox-label-std">
+                                    <input type="checkbox" name="dietaryPrimary" value="shellfish-allergy">
+                                    Shellfish Allergy
+                                </label>
+                                <label class="checkbox-label-std">
+                                    <input type="checkbox" name="dietaryPrimary" value="vegetarian">
+                                    Vegetarian
+                                </label>
+                                <label class="checkbox-label-std">
+                                    <input type="checkbox" name="dietaryPrimary" value="vegan">
+                                    Vegan
+                                </label>
+                                <label class="checkbox-label-std">
+                                    <input type="checkbox" name="dietaryPrimary" value="other" id="dietaryPrimaryOther">
+                                    Other
+                                </label>
+                            </div>
+                            <div class="form-group-std" id="otherDietaryPrimaryGroup" style="display: none; margin-top: 1rem;">
+                                <textarea id="otherDietaryPrimary" name="otherDietaryPrimary" 
+                                          placeholder="Please describe other dietary restrictions..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Second Guest Dietary -->
+                        <div class="dietary-guest-section" id="secondGuestDietarySection" style="display: none;">
+                            <div class="dietary-guest-title" id="secondDietaryTitle">Dietary requirements for second guest:</div>
+                            <div class="checkbox-group-std">
+                                <label class="checkbox-label-std">
+                                    <input type="checkbox" name="dietarySecond" value="none" id="dietarySecondNone">
+                                    None
+                                </label>
+                                <label class="checkbox-label-std">
+                                    <input type="checkbox" name="dietarySecond" value="gluten-free">
+                                    Gluten Free
+                                </label>
+                                <label class="checkbox-label-std">
+                                    <input type="checkbox" name="dietarySecond" value="dairy-free">
+                                    Dairy Free / Lactose Intolerant
+                                </label>
+                                <label class="checkbox-label-std">
+                                    <input type="checkbox" name="dietarySecond" value="nut-allergy">
+                                    Nut Allergy (Peanuts / Tree Nuts)
+                                </label>
+                                <label class="checkbox-label-std">
+                                    <input type="checkbox" name="dietarySecond" value="shellfish-allergy">
+                                    Shellfish Allergy
+                                </label>
+                                <label class="checkbox-label-std">
+                                    <input type="checkbox" name="dietarySecond" value="vegetarian">
+                                    Vegetarian
+                                </label>
+                                <label class="checkbox-label-std">
+                                    <input type="checkbox" name="dietarySecond" value="vegan">
+                                    Vegan
+                                </label>
+                                <label class="checkbox-label-std">
+                                    <input type="checkbox" name="dietarySecond" value="other" id="dietarySecondOther">
+                                    Other
+                                </label>
+                            </div>
+                            <div class="form-group-std" id="otherDietarySecondGroup" style="display: none; margin-top: 1rem;">
+                                <textarea id="otherDietarySecond" name="otherDietarySecond" 
+                                          placeholder="Please describe other dietary restrictions..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section-std" id="regretsSection" style="display: none;">
+                        <h3 class="form-section-title-std">We'll Miss You!</h3>
+                        <p style="color: #666; margin-bottom: 1.5rem; font-style: italic;">
+                            We're sorry you won't be able to join us in Lake Garda. We understand that international travel isn't always possible, and we'll be thinking of you on our special day.
+                        </p>
+                        <div class="form-group-std">
+                            <label>Would you like to leave us a message?</label>
+                            <textarea id="regretsMessage" name="regretsMessage" 
+                                      placeholder="Share your congratulations, well wishes, or anything else you'd like us to know..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-submit-std">
+                        <button type="button" id="submitResponse" class="submit-button-std">Send Response</button>
+                        <p class="form-note-std">
+                            Formal invitations with venue details, timings, and RSVP will follow closer to the date.
+                        </p>
+                    </div>
+                </div>
+
+                <div id="responseSubmitted" style="display: none;" class="std-form">
+                    <div style="text-align: center; padding: 3rem 2rem;">
+                        <div style="font-size: 4rem; color: #28a745; margin-bottom: 2rem;">✓</div>
+                        <h2 style="color: #28a745; margin-bottom: 2rem; font-family: 'Playfair Display', serif;">Response Submitted Successfully!</h2>
+                        <p style="font-size: 1.1rem; color: #666; margin-bottom: 2rem; line-height: 1.6;">
+                            Thank you for your response! We have received your information and will be in touch with more details about our Lake Garda celebration soon.
+                        </p>
+                        <div style="background: #f8f9fa; padding: 2rem; margin: 2rem 0; border-left: 4px solid #d4af37;">
+                            <p style="color: #555; margin-bottom: 1rem;"><strong>What's next?</strong></p>
+                            <p style="color: #666; font-size: 0.95rem; line-height: 1.6;">
+                                • Formal invitations with venue details and timings will follow<br>
+                                • We'll share accommodation recommendations if requested<br>
+                                • You can log back in anytime to view or update your response
+                            </p>
+                        </div>
+                        <button onclick="showMyResponse()" style="background: #d4af37; color: #1a1a1a; border: none; padding: 1rem 2rem; cursor: pointer; font-weight: 600; margin-right: 1rem; margin-bottom: 1rem;">
+                            View My Response
+                        </button>
+                        <button onclick="logout()" style="background: #666; color: white; border: none; padding: 1rem 2rem; cursor: pointer; font-weight: 600; margin-bottom: 1rem;">
+                            Logout
+                        </button>
+                    </div>
+                </div>
+
+                <div id="viewResponse" style="display: none;" class="std-form">
+                    <div style="padding: 2rem;">
+                        <h2 style="color: #d4af37; margin-bottom: 2rem; font-family: 'Playfair Display', serif; text-align: center;">Your Current Response</h2>
+                        <div id="responseDetails" style="background: #f8f9fa; padding: 2rem; border-left: 4px solid #d4af37; margin-bottom: 2rem;">
+                        </div>
+                        <div style="text-align: center;">
+                            <button onclick="editResponse()" style="background: #d4af37; color: #1a1a1a; border: none; padding: 1rem 2rem; cursor: pointer; font-weight: 600; margin-right: 1rem;">
+                                Edit Response
+                            </button>
+                            <button onclick="showSubmittedState()" style="background: #666; color: white; border: none; padding: 1rem 2rem; cursor: pointer; font-weight: 600;">
+                                Back
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="std-footer">
+            <button onclick="logout()" class="logout-btn">Logout</button>
+            <p>Thank you for being part of our special day!</p>
+        </div>
+    </div>
+
+    <div id="adminSection" class="admin-section">
+        <h4>Admin: Upload Guest List</h4>
+        <input type="file" id="guestListFile" accept=".xlsx,.xls,.csv">
+        <button type="button" id="uploadGuestList">Load Guest List</button>
+        <p style="font-size: 0.8rem;">Excel: Email, Primary_Name, Second_Name</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        var guestList = [];
+        var currentGuest = null;
+        var savedResponse = null;
+
+        window.onload = function() {
+            // Check if user is admin based on email they enter
+            checkForAdminAccess();
+            
+            document.getElementById('uploadGuestList').onclick = handleFileUpload;
+            document.getElementById('accessButton').onclick = handleEmailAccess;
+        };
+
+        function checkForAdminAccess() {
+            // Only show admin section if accessing with specific parameter
+            var urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('admin') === 'true') {
+                var adminEmail = prompt('Enter admin email to access guest list management:');
+                if (adminEmail === 'matt.j.johnson1992@gmail.com' || adminEmail === '9339000@gmail.com' || adminEmail === 'mj.anastasia.johnson@gmail.com') {
+                    document.getElementById('adminSection').style.display = 'block';
+                    alert('Admin access granted');
+                } else {
+                    alert('Invalid admin email');
+                }
+            }
+        }
+
+        function handleFileUpload() {
+            var fileInput = document.getElementById('guestListFile');
+            var file = fileInput.files[0];
+            if (!file) {
+                alert('Please select a file first');
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    var data = new Uint8Array(e.target.result);
+                    var workbook = XLSX.read(data, { type: 'array' });
+                    var worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                    guestList = XLSX.utils.sheet_to_json(worksheet);
+                    alert('Loaded ' + guestList.length + ' guests successfully!');
+                } catch (error) {
+                    alert('Error reading file');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function handleEmailAccess() {
+            var email = document.getElementById('accessEmail').value.trim();
+            if (!email) {
+                alert('Please enter an email');
+                return;
+            }
+            if (guestList.length === 0) {
+                alert('Please upload guest list first');
+                return;
+            }
+            var guest = null;
+            for (var i = 0; i < guestList.length; i++) {
+                if (guestList[i].Email && guestList[i].Email.toLowerCase() === email.toLowerCase()) {
+                    guest = guestList[i];
+                    break;
+                }
+            }
+            if (!guest) {
+                document.getElementById('welcomeError').style.display = 'block';
+                return;
+            }
+            currentGuest = guest;
+            document.getElementById('welcomePage').style.display = 'none';
+            document.getElementById('mainWebsite').style.display = 'block';
+            setupSaveTheDatePage();
+        }
+
+        function setupSaveTheDatePage() {
+            document.getElementById('primaryGuestSTD').value = currentGuest.Primary_Name || '';
+            
+            // Check if this guest has a second name in the Excel OR if they have a plus-one
+            if (currentGuest.Second_Name) {
+                // They have a named second guest (like a spouse)
+                document.getElementById('secondGuestSTD').style.display = 'block';
+                document.getElementById('secondGuestNameSTD').value = currentGuest.Second_Name;
+                document.getElementById('secondGuestNameSTD').placeholder = 'Enter your partner\'s preferred name';
+                document.getElementById('secondGuestDietarySection').style.display = 'block';
+                updateDietaryLabels();
+            } else if (currentGuest.Has_Plus_One === 'Yes' || currentGuest.Has_Plus_One === true) {
+                // They have a plus-one but no pre-filled name
+                document.getElementById('secondGuestSTD').style.display = 'block';
+                document.getElementById('secondGuestNameSTD').value = '';
+                document.getElementById('secondGuestNameSTD').placeholder = 'Please include name of your plus one';
+                document.getElementById('secondGuestDietarySection').style.display = 'block';
+                updateDietaryLabels();
+            } else {
+                // Single guest, no plus-one
+                document.getElementById('secondGuestSTD').style.display = 'none';
+                document.getElementById('secondGuestDietarySection').style.display = 'none';
+            }
+            
+            // Always update dietary labels after setting up the form
+            updateDietaryLabels();
+            
+            if (savedResponse) {
+                document.getElementById('responseForm').style.display = 'none';
+                document.getElementById('responseSubmitted').style.display = 'block';
+            } else {
+                document.getElementById('responseForm').style.display = 'block';
+                document.getElementById('responseSubmitted').style.display = 'none';
+            }
+            document.getElementById('viewResponse').style.display = 'none';
+            startCountdownTimer();
+            setupFormHandlers();
+        }
+
+        function updateDietaryLabels() {
+            var primaryName = document.getElementById('primaryGuestSTD').value;
+            var primaryTitle = document.getElementById('primaryDietaryTitle');
+            
+            if (primaryTitle) {
+                // Check if this is a single guest (no second guest section visible)
+                if (document.getElementById('secondGuestSTD').style.display === 'none') {
+                    // Single guest - use just their name
+                    if (primaryName && primaryName.trim() !== '') {
+                        primaryTitle.textContent = 'Dietary requirements for ' + primaryName + ':';
+                    } else {
+                        primaryTitle.textContent = 'Your dietary requirements:';
+                    }
+                } else {
+                    // Multiple guests - use their name
+                    if (primaryName && primaryName.trim() !== '') {
+                        primaryTitle.textContent = 'Dietary requirements for ' + primaryName + ':';
+                    } else {
+                        primaryTitle.textContent = 'Dietary requirements for primary guest:';
+                    }
+                }
+            }
+            
+            // Handle second guest label if visible
+            if (document.getElementById('secondGuestSTD').style.display !== 'none') {
+                var secondName = document.getElementById('secondGuestNameSTD').value;
+                var secondTitle = document.getElementById('secondDietaryTitle');
+                if (secondTitle) {
+                    if (secondName && secondName.trim() !== '') {
+                        secondTitle.textContent = 'Dietary requirements for ' + secondName + ':';
+                    } else {
+                        secondTitle.textContent = 'Dietary requirements for plus one:';
+                    }
+                }
+            }
+        }
+
+        function startCountdownTimer() {
+            function updateCountdown() {
+                var weddingDate = new Date('September 12, 2026 16:00:00').getTime();
+                var now = new Date().getTime();
+                var timeLeft = weddingDate - now;
+                var days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                var daysElement = document.getElementById('daysCounter');
+                if (daysElement) {
+                    daysElement.textContent = days;
+                }
+            }
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
+        }
+
+        function setupFormHandlers() {
+            var responseRadios = document.querySelectorAll('input[name="initialResponse"]');
+            for (var i = 0; i < responseRadios.length; i++) {
+                responseRadios[i].onchange = function() {
+                    var travelSection = document.getElementById('travelSection');
+                    var dietarySection = document.getElementById('dietarySection');
+                    var regretsSection = document.getElementById('regretsSection');
+                    if (this.value === 'planning-to-attend') {
+                        travelSection.style.display = 'block';
+                        dietarySection.style.display = 'block';
+                        regretsSection.style.display = 'none';
+                    } else if (this.value === 'cannot-attend') {
+                        travelSection.style.display = 'none';
+                        dietarySection.style.display = 'none';
+                        regretsSection.style.display = 'block';
+                    }
+                };
+            }
+
+            // Primary guest dietary handlers
+            var primaryNoneCheckbox = document.getElementById('dietaryPrimaryNone');
+            if (primaryNoneCheckbox) {
+                primaryNoneCheckbox.onchange = function() {
+                    if (this.checked) {
+                        var otherCheckboxes = document.querySelectorAll('input[name="dietaryPrimary"]:not(#dietaryPrimaryNone)');
+                        for (var i = 0; i < otherCheckboxes.length; i++) {
+                            otherCheckboxes[i].checked = false;
+                        }
+                        document.getElementById('otherDietaryPrimaryGroup').style.display = 'none';
+                        document.getElementById('otherDietaryPrimary').value = '';
+                    }
+                };
+            }
+
+            var primaryDietaryCheckboxes = document.querySelectorAll('input[name="dietaryPrimary"]:not(#dietaryPrimaryNone)');
+            for (var i = 0; i < primaryDietaryCheckboxes.length; i++) {
+                primaryDietaryCheckboxes[i].onchange = function() {
+                    if (this.checked && primaryNoneCheckbox) {
+                        primaryNoneCheckbox.checked = false;
+                    }
+                };
+            }
+
+            var primaryOtherCheckbox = document.getElementById('dietaryPrimaryOther');
+            if (primaryOtherCheckbox) {
+                primaryOtherCheckbox.onchange = function() {
+                    var otherGroup = document.getElementById('otherDietaryPrimaryGroup');
+                    if (this.checked) {
+                        otherGroup.style.display = 'block';
+                        if (primaryNoneCheckbox) primaryNoneCheckbox.checked = false;
+                    } else {
+                        otherGroup.style.display = 'none';
+                        document.getElementById('otherDietaryPrimary').value = '';
+                    }
+                };
+            }
+
+            // Second guest dietary handlers
+            var secondNoneCheckbox = document.getElementById('dietarySecondNone');
+            if (secondNoneCheckbox) {
+                secondNoneCheckbox.onchange = function() {
+                    if (this.checked) {
+                        var otherCheckboxes = document.querySelectorAll('input[name="dietarySecond"]:not(#dietarySecondNone)');
+                        for (var i = 0; i < otherCheckboxes.length; i++) {
+                            otherCheckboxes[i].checked = false;
+                        }
+                        document.getElementById('otherDietarySecondGroup').style.display = 'none';
+                        document.getElementById('otherDietarySecond').value = '';
+                    }
+                };
+            }
+
+            var secondDietaryCheckboxes = document.querySelectorAll('input[name="dietarySecond"]:not(#dietarySecondNone)');
+            for (var i = 0; i < secondDietaryCheckboxes.length; i++) {
+                secondDietaryCheckboxes[i].onchange = function() {
+                    if (this.checked && secondNoneCheckbox) {
+                        secondNoneCheckbox.checked = false;
+                    }
+                };
+            }
+
+            var secondOtherCheckbox = document.getElementById('dietarySecondOther');
+            if (secondOtherCheckbox) {
+                secondOtherCheckbox.onchange = function() {
+                    var otherGroup = document.getElementById('otherDietarySecondGroup');
+                    if (this.checked) {
+                        otherGroup.style.display = 'block';
+                        if (secondNoneCheckbox) secondNoneCheckbox.checked = false;
+                    } else {
+                        otherGroup.style.display = 'none';
+                        document.getElementById('otherDietarySecond').value = '';
+                    }
+                };
+            }
+
+            // Update labels when names change
+            document.getElementById('primaryGuestSTD').onkeyup = updateDietaryLabels;
+            var secondGuestField = document.getElementById('secondGuestNameSTD');
+            if (secondGuestField) {
+                secondGuestField.onkeyup = updateDietaryLabels;
+            }
+
+            document.getElementById('submitResponse').onclick = function() {
+                this.disabled = true;
+                this.textContent = 'Sending...';
+                
+                var responseData = {
+                    guest: currentGuest.Primary_Name,
+                    email: currentGuest.Email
+                };
+                
+                var initialResponse = document.querySelector('input[name="initialResponse"]:checked');
+                if (initialResponse) {
+                    responseData.attending = initialResponse.value;
+                }
+                
+                responseData.primaryGuestName = document.getElementById('primaryGuestSTD').value;
+                if (document.getElementById('secondGuestSTD').style.display !== 'none') {
+                    responseData.secondGuestName = document.getElementById('secondGuestNameSTD').value;
+                }
+                
+                if (responseData.attending === 'planning-to-attend') {
+                    var visitedBefore = document.querySelector('input[name="visitedBefore"]:checked');
+                    if (visitedBefore) {
+                        responseData.visitedLakeGarda = visitedBefore.value;
+                    }
+                    
+                    responseData.travelQuestions = document.getElementById('travelQuestions').value;
+                    
+                    // Collect primary guest dietary
+                    var selectedPrimaryDietary = [];
+                    var primaryDietaryCheckboxes = document.querySelectorAll('input[name="dietaryPrimary"]:checked');
+                    for (var i = 0; i < primaryDietaryCheckboxes.length; i++) {
+                        selectedPrimaryDietary.push(primaryDietaryCheckboxes[i].value);
+                    }
+                    responseData.primaryDietaryRestrictions = selectedPrimaryDietary;
+                    
+                    if (selectedPrimaryDietary.includes('other')) {
+                        responseData.primaryOtherDietary = document.getElementById('otherDietaryPrimary').value;
+                    }
+
+                    // Collect second guest dietary if applicable
+                    if (document.getElementById('secondGuestDietarySection').style.display !== 'none') {
+                        var selectedSecondDietary = [];
+                        var secondDietaryCheckboxes = document.querySelectorAll('input[name="dietarySecond"]:checked');
+                        for (var i = 0; i < secondDietaryCheckboxes.length; i++) {
+                            selectedSecondDietary.push(secondDietaryCheckboxes[i].value);
+                        }
+                        responseData.secondDietaryRestrictions = selectedSecondDietary;
+                        
+                        if (selectedSecondDietary.includes('other')) {
+                            responseData.secondOtherDietary = document.getElementById('otherDietarySecond').value;
+                        }
+                    }
+                } else {
+                    responseData.regretsMessage = document.getElementById('regretsMessage').value;
+                }
+                
+                setTimeout(function() {
+                    savedResponse = responseData;
+                    document.getElementById('responseForm').style.display = 'none';
+                    document.getElementById('responseSubmitted').style.display = 'block';
+                    document.getElementById('responseSubmitted').scrollIntoView({ behavior: 'smooth' });
+                    var submitBtn = document.getElementById('submitResponse');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Send Response';
+                }, 1000);
+            };
+        }
+
+        function showSubmittedState() {
+            document.getElementById('responseForm').style.display = 'none';
+            document.getElementById('viewResponse').style.display = 'none';
+            document.getElementById('responseSubmitted').style.display = 'block';
+        }
+
+        function showMyResponse() {
+            if (!savedResponse) {
+                alert('No response found');
+                return;
+            }
+            
+            var detailsHTML = '<h3 style="color: #1a1a1a; margin-bottom: 1rem;">Response Details</h3>';
+            detailsHTML += '<p><strong>Guest(s):</strong> ' + savedResponse.primaryGuestName;
+            if (savedResponse.secondGuestName) {
+                detailsHTML += ' & ' + savedResponse.secondGuestName;
+            }
+            detailsHTML += '</p>';
+            
+            detailsHTML += '<p><strong>Attendance:</strong> ';
+            if (savedResponse.attending === 'planning-to-attend') {
+                detailsHTML += 'Planning to attend';
+            } else {
+                detailsHTML += 'Cannot attend';
+            }
+            detailsHTML += '</p>';
+            
+            if (savedResponse.attending === 'planning-to-attend') {
+                if (savedResponse.visitedLakeGarda) {
+                    detailsHTML += '<p><strong>Visited Lake Garda before:</strong> ' + (savedResponse.visitedLakeGarda === 'yes' ? 'Yes' : 'No') + '</p>';
+                }
+                if (savedResponse.travelQuestions) {
+                    detailsHTML += '<p><strong>Travel questions:</strong> ' + savedResponse.travelQuestions + '</p>';
+                }
+                if (savedResponse.primaryDietaryRestrictions && savedResponse.primaryDietaryRestrictions.length > 0) {
+                    detailsHTML += '<p><strong>Dietary restrictions (' + savedResponse.primaryGuestName + '):</strong> ' + savedResponse.primaryDietaryRestrictions.join(', ') + '</p>';
+                }
+                if (savedResponse.primaryOtherDietary) {
+                    detailsHTML += '<p><strong>Other dietary notes (' + savedResponse.primaryGuestName + '):</strong> ' + savedResponse.primaryOtherDietary + '</p>';
+                }
+                if (savedResponse.secondDietaryRestrictions && savedResponse.secondDietaryRestrictions.length > 0) {
+                    detailsHTML += '<p><strong>Dietary restrictions (' + savedResponse.secondGuestName + '):</strong> ' + savedResponse.secondDietaryRestrictions.join(', ') + '</p>';
+                }
+                if (savedResponse.secondOtherDietary) {
+                    detailsHTML += '<p><strong>Other dietary notes (' + savedResponse.secondGuestName + '):</strong> ' + savedResponse.secondOtherDietary + '</p>';
+                }
+            } else {
+                if (savedResponse.regretsMessage) {
+                    detailsHTML += '<p><strong>Message:</strong> ' + savedResponse.regretsMessage + '</p>';
+                }
+            }
+            
+            document.getElementById('responseDetails').innerHTML = detailsHTML;
+            document.getElementById('responseSubmitted').style.display = 'none';
+            document.getElementById('viewResponse').style.display = 'block';
+        }
+
+        function editResponse() {
+            if (savedResponse.attending) {
+                var attendingRadio = document.querySelector('input[name="initialResponse"][value="' + savedResponse.attending + '"]');
+                if (attendingRadio) {
+                    attendingRadio.checked = true;
+                    if (attendingRadio.onchange) attendingRadio.onchange();
+                }
+            }
+            if (savedResponse.visitedLakeGarda) {
+                var visitedRadio = document.querySelector('input[name="visitedBefore"][value="' + savedResponse.visitedLakeGarda + '"]');
+                if (visitedRadio) visitedRadio.checked = true;
+            }
+            if (savedResponse.travelQuestions) {
+                document.getElementById('travelQuestions').value = savedResponse.travelQuestions;
+            }
+            if (savedResponse.primaryGuestName) {
+                document.getElementById('primaryGuestSTD').value = savedResponse.primaryGuestName;
+            }
+            if (savedResponse.secondGuestName) {
+                document.getElementById('secondGuestNameSTD').value = savedResponse.secondGuestName;
+            }
+            if (savedResponse.primaryDietaryRestrictions) {
+                for (var i = 0; i < savedResponse.primaryDietaryRestrictions.length; i++) {
+                    var checkbox = document.querySelector('input[name="dietaryPrimary"][value="' + savedResponse.primaryDietaryRestrictions[i] + '"]');
+                    if (checkbox) checkbox.checked = true;
+                }
+            }
+            if (savedResponse.primaryOtherDietary) {
+                document.getElementById('otherDietaryPrimary').value = savedResponse.primaryOtherDietary;
+                document.getElementById('otherDietaryPrimaryGroup').style.display = 'block';
+            }
+            if (savedResponse.secondDietaryRestrictions) {
+                for (var i = 0; i < savedResponse.secondDietaryRestrictions.length; i++) {
+                    var checkbox = document.querySelector('input[name="dietarySecond"][value="' + savedResponse.secondDietaryRestrictions[i] + '"]');
+                    if (checkbox) checkbox.checked = true;
+                }
+            }
+            if (savedResponse.secondOtherDietary) {
+                document.getElementById('otherDietarySecond').value = savedResponse.secondOtherDietary;
+                document.getElementById('otherDietarySecondGroup').style.display = 'block';
+            }
+            if (savedResponse.regretsMessage) {
+                document.getElementById('regretsMessage').value = savedResponse.regretsMessage;
+            }
+            updateDietaryLabels();
+            document.getElementById('viewResponse').style.display = 'none';
+            document.getElementById('responseForm').style.display = 'block';
+        }
+
+        function logout() {
+            document.getElementById('mainWebsite').style.display = 'none';
+            document.getElementById('welcomePage').style.display = 'flex';
+            document.getElementById('welcomeError').style.display = 'none';
+            document.getElementById('accessEmail').value = '';
+            currentGuest = null;
+            savedResponse = null;
+        }
+    </script>
+</body>
+</html>
