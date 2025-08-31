@@ -118,17 +118,17 @@
 
         .video-fallback-content h1 {
             font-family: 'Bodoni Moda', serif;
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: 600;
             margin-bottom: 1rem;
             color: #fefcf7;
         }
 
         .video-fallback-content p {
-            font-size: 1rem;
+            font-size: 1.1rem;
             color: #8b7d6b;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             font-weight: 300;
         }
 
@@ -168,13 +168,11 @@
             ), 
             radial-gradient(ellipse at 30% 70%, rgba(139, 125, 107, 0.15) 0%, transparent 50%),
             linear-gradient(180deg, #1a1a1a 0%, #293b4d 100%);
-            padding: 1rem;
         }
 
         .welcome-content {
             max-width: 600px;
-            width: 100%;
-            padding: 3rem 2rem;
+            padding: 4rem 3rem;
             background: rgba(254, 252, 247, 0.97);
             border: 1px solid rgba(139, 125, 107, 0.2);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 8px 25px rgba(0, 0, 0, 0.15);
@@ -198,7 +196,7 @@
 
         .welcome-title {
             font-family: 'Bodoni Moda', serif;
-            font-size: 2.8rem;
+            font-size: 3.5rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
             text-transform: none;
@@ -210,18 +208,18 @@
         .welcome-subtitle {
             font-family: 'Bodoni Moda', serif;
             font-style: italic;
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             color: #8b7d6b;
             margin-bottom: 0.3rem;
             font-weight: 400;
         }
 
         .welcome-venue {
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             color: #666;
-            margin-bottom: 2.5rem;
+            margin-bottom: 3rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             font-weight: 300;
         }
 
@@ -264,7 +262,7 @@
             padding: 1.5rem 3rem;
             border: 1px solid rgba(139, 125, 107, 0.4);
             font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 400;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -311,19 +309,90 @@
             position: fixed;
             bottom: 20px;
             left: 20px;
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 1rem;
-            max-width: 300px;
+            background: rgba(26, 26, 26, 0.95);
+            color: #fefcf7;
+            padding: 1.5rem;
+            max-width: 400px;
+            min-width: 350px;
+            max-height: 500px;
+            overflow-y: auto;
+            border: 1px solid rgba(139, 125, 107, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
-        .admin-section button {
-            background: #8b7d6b;
+        .admin-tab-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .admin-tab-btn {
+            background: rgba(139, 125, 107, 0.3);
             color: #fefcf7;
-            border: none;
+            border: 1px solid rgba(139, 125, 107, 0.5);
             padding: 0.5rem 1rem;
             cursor: pointer;
-            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            flex: 1;
+            transition: all 0.3s ease;
+        }
+
+        .admin-tab-btn.active {
+            background: rgba(139, 125, 107, 0.8);
+        }
+
+        .admin-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .admin-btn {
+            background: rgba(139, 125, 107, 0.7);
+            color: #fefcf7;
+            border: 1px solid rgba(139, 125, 107, 0.5);
+            padding: 0.7rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .admin-btn:hover {
+            background: rgba(139, 125, 107, 0.9);
+        }
+
+        .admin-btn.danger {
+            background: rgba(180, 50, 50, 0.7);
+            border-color: rgba(180, 50, 50, 0.5);
+        }
+
+        .admin-btn.danger:hover {
+            background: rgba(180, 50, 50, 0.9);
+        }
+
+        .responses-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid rgba(139, 125, 107, 0.3);
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .response-item {
+            padding: 0.5rem;
+            border-bottom: 1px solid rgba(139, 125, 107, 0.2);
+            font-size: 0.8rem;
+        }
+
+        .response-item:last-child {
+            border-bottom: none;
+        }
+
+        .admin-section h4, .admin-section h5 {
+            margin: 0 0 1rem 0;
+            color: #8b7d6b;
         }
 
         .main-website {
@@ -347,7 +416,6 @@
             color: #fefcf7;
             position: relative;
             overflow: hidden;
-            padding: 2rem 1rem;
         }
 
         .std-header::before {
@@ -363,8 +431,7 @@
 
         .std-content {
             max-width: 800px;
-            width: 100%;
-            padding: 3rem 2rem;
+            padding: 4rem 3rem;
             background: rgba(254, 252, 247, 0.97);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(139, 125, 107, 0.2);
@@ -377,17 +444,17 @@
 
         .std-title {
             font-family: 'Inter', sans-serif;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 300;
             margin-bottom: 2rem;
             color: #8b7d6b;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
         }
 
         .std-names {
             font-family: 'Bodoni Moda', serif;
-            font-size: 3.5rem;
+            font-size: 4.5rem;
             font-weight: 600;
             margin-bottom: 1.5rem;
             color: #1a1a1a;
@@ -399,35 +466,35 @@
         .std-date {
             font-family: 'Bodoni Moda', serif;
             font-style: italic;
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             font-weight: 400;
             margin-bottom: 0.8rem;
             color: #8b7d6b;
         }
 
         .std-location {
-            font-size: 0.9rem;
-            margin-bottom: 2rem;
+            font-size: 1rem;
+            margin-bottom: 2.5rem;
             color: #666;
             font-weight: 300;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-transform: uppercase;
         }
 
         .std-message {
             margin-bottom: 2rem;
-            font-size: 1rem;
+            font-size: 1.1rem;
             line-height: 1.6;
             color: #555;
         }
 
         .event-details {
-            margin: 2rem 0;
+            margin: 2.5rem 0;
             text-align: center;
         }
 
         .details-intro {
-            font-size: 0.95rem;
+            font-size: 1rem;
             line-height: 1.7;
             color: #666;
             font-weight: 300;
@@ -469,7 +536,7 @@
 
         .countdown-number {
             font-family: 'Bodoni Moda', serif;
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 600;
             display: block;
             color: #fefcf7;
@@ -478,15 +545,15 @@
         }
 
         .countdown-label {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             font-weight: 300;
             color: rgba(254, 252, 247, 0.8);
         }
 
         .response-section {
-            padding: 4rem 1rem;
+            padding: 5rem 2rem;
             background: linear-gradient(180deg, #fefcf7 0%, #f8f5ef 100%);
             position: relative;
         }
@@ -505,12 +572,11 @@
         .response-container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 0 1rem;
         }
 
         .response-title {
             font-family: 'Bodoni Moda', serif;
-            font-size: 2.2rem;
+            font-size: 2.8rem;
             text-align: center;
             margin-bottom: 1rem;
             color: #1a1a1a;
@@ -522,9 +588,9 @@
 
         .response-subtitle {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
             color: #666;
-            font-size: 0.95rem;
+            font-size: 1rem;
             line-height: 1.6;
             font-weight: 300;
             max-width: 600px;
@@ -535,14 +601,14 @@
         .std-form {
             background: rgba(254, 252, 247, 0.8);
             backdrop-filter: blur(10px);
-            padding: 3rem 2rem;
+            padding: 4rem 3rem;
             border: 1px solid rgba(139, 125, 107, 0.2);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1), 0 8px 25px rgba(0, 0, 0, 0.05);
             position: relative;
         }
 
         .form-section-std {
-            margin-bottom: 2.5rem;
+            margin-bottom: 3rem;
             padding-bottom: 2rem;
             border-bottom: 1px solid rgba(139, 125, 107, 0.15);
         }
@@ -553,7 +619,7 @@
 
         .form-section-title-std {
             font-family: 'Bodoni Moda', serif;
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             color: #1a1a1a;
             margin-bottom: 2rem;
             text-transform: none;
@@ -571,7 +637,7 @@
             margin-bottom: 0.8rem;
             font-weight: 400;
             color: #1a1a1a;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             letter-spacing: 1px;
             text-transform: uppercase;
         }
@@ -579,7 +645,7 @@
         .form-group-std input,
         .form-group-std textarea {
             width: 100%;
-            padding: 1.2rem;
+            padding: 1.3rem;
             border: 1px solid rgba(139, 125, 107, 0.25);
             background: rgba(254, 252, 247, 0.7);
             font-size: 1rem;
@@ -604,6 +670,15 @@
             line-height: 1.6;
         }
 
+        .form-row-std {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row-std .form-group-std {
+            flex: 1;
+        }
+
         .radio-group-std, .checkbox-group-std {
             display: flex;
             flex-direction: column;
@@ -614,7 +689,7 @@
             display: flex;
             align-items: center;
             cursor: pointer;
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: #1a1a1a;
             padding: 1.2rem 1.5rem;
             border: 1px solid rgba(139, 125, 107, 0.2);
@@ -684,7 +759,7 @@
 
         .form-note-std {
             color: #666;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-style: italic;
             font-weight: 300;
             line-height: 1.5;
@@ -736,173 +811,61 @@
             backdrop-filter: blur(5px);
         }
 
-        .dietary-guest-title {
-            font-weight: 500;
-            margin-bottom: 1.5rem;
-            color: #8b7d6b;
-            font-size: 1rem;
-            font-family: 'Bodoni Moda', serif;
-            letter-spacing: 0.5px;
-        }
-
-        /* Mobile Responsive Styles */
+        /* Mobile Responsiveness */
         @media (max-width: 768px) {
-            .video-overlay {
-                padding: 1rem;
-            }
-
-            .skip-button {
-                padding: 0.7rem 1.2rem;
-                font-size: 0.8rem;
-            }
-
-            .video-fallback-content h1 {
-                font-size: 2rem;
-            }
-
-            .video-fallback-content p {
-                font-size: 0.9rem;
-                letter-spacing: 1.5px;
-            }
-
             .welcome-content {
-                padding: 2.5rem 1.5rem;
                 margin: 1rem;
+                padding: 2rem 1.5rem;
             }
 
             .welcome-title {
-                font-size: 2.2rem;
-            }
-
-            .welcome-subtitle {
-                font-size: 1.2rem;
-            }
-
-            .welcome-venue {
-                font-size: 0.8rem;
-                letter-spacing: 1.5px;
-            }
-
-            .std-header {
-                min-height: 60vh;
-                padding: 1.5rem 0.5rem;
-            }
-
-            .std-content {
-                padding: 2.5rem 1.5rem;
-            }
-
-            .std-title {
-                font-size: 0.9rem;
-                letter-spacing: 2px;
-            }
-
-            .std-names {
-                font-size: 2.8rem;
-                letter-spacing: 1px;
-            }
-
-            .std-date {
-                font-size: 1.5rem;
-            }
-
-            .std-location {
-                font-size: 0.8rem;
-                letter-spacing: 1.5px;
-            }
-
-            .std-message {
-                font-size: 0.95rem;
-            }
-
-            .details-intro {
-                font-size: 0.9rem;
-            }
-
-            .countdown-display {
-                padding: 1.5rem;
-                margin: 2rem auto;
-            }
-
-            .countdown-number {
                 font-size: 2.5rem;
             }
 
-            .countdown-label {
-                font-size: 0.75rem;
-                letter-spacing: 1.5px;
+            .welcome-subtitle {
+                font-size: 1.3rem;
             }
 
-            .response-section {
-                padding: 3rem 0.5rem;
+            .std-content {
+                margin: 1rem;
+                padding: 2rem 1.5rem;
             }
 
-            .response-container {
-                padding: 0 0.5rem;
+            .std-names {
+                font-size: 3rem;
             }
 
-            .response-title {
+            .std-date {
                 font-size: 1.8rem;
             }
 
-            .response-subtitle {
-                font-size: 0.9rem;
+            .response-container {
+                padding: 0 1rem;
             }
 
             .std-form {
-                padding: 2.5rem 1.5rem;
+                padding: 2rem 1.5rem;
             }
 
             .form-section-title-std {
-                font-size: 1.4rem;
+                font-size: 1.5rem;
             }
 
-            .form-group-std label {
+            .event-details {
+                margin: 2rem 1rem;
+            }
+
+            .details-intro {
+                font-size: 0.95rem;
+            }
+
+            .skip-button {
+                padding: 0.6rem 1rem;
                 font-size: 0.8rem;
             }
 
-            .form-group-std input,
-            .form-group-std textarea {
+            .video-overlay {
                 padding: 1rem;
-                font-size: 0.95rem;
-            }
-
-            .radio-label-std, .checkbox-label-std {
-                padding: 1rem 1.2rem;
-                font-size: 0.9rem;
-            }
-
-            .dietary-guest-section {
-                padding: 1.5rem;
-            }
-
-            .dietary-guest-title {
-                font-size: 0.95rem;
-            }
-
-            .submit-button-std {
-                padding: 1.4rem 3rem;
-                font-size: 0.85rem;
-            }
-
-            .form-note-std {
-                font-size: 0.75rem;
-            }
-
-            .std-footer {
-                padding: 2.5rem 1rem;
-            }
-
-            .logout-btn {
-                padding: 0.9rem 1.8rem;
-                font-size: 0.85rem;
-            }
-
-            .admin-section {
-                bottom: 10px;
-                left: 10px;
-                padding: 0.8rem;
-                max-width: 250px;
             }
         }
 
@@ -915,80 +878,20 @@
                 font-size: 1.1rem;
             }
 
-            .welcome-content {
-                padding: 2rem 1.2rem;
-            }
-
             .std-names {
-                font-size: 2.4rem;
+                font-size: 2.5rem;
             }
 
             .std-date {
-                font-size: 1.3rem;
-            }
-
-            .response-title {
-                font-size: 1.6rem;
-            }
-
-            .form-section-title-std {
-                font-size: 1.3rem;
-            }
-
-            .std-form {
-                padding: 2rem 1.2rem;
+                font-size: 1.5rem;
             }
 
             .countdown-number {
-                font-size: 2.2rem;
+                font-size: 2.5rem;
             }
 
-            .radio-label-std, .checkbox-label-std {
-                padding: 0.9rem 1rem;
-                font-size: 0.85rem;
-            }
-
-            .submit-button-std {
-                padding: 1.3rem 2.5rem;
-                font-size: 0.8rem;
-                letter-spacing: 1.5px;
-            }
-        }
-
-        /* Landscape orientation adjustments for mobile */
-        @media (max-height: 500px) and (orientation: landscape) {
-            .std-header {
-                min-height: 90vh;
-            }
-            
-            .welcome-page {
-                padding: 0.5rem;
-            }
-            
-            .welcome-content {
-                padding: 2rem 1.5rem;
-            }
-        }
-
-        /* Touch-friendly improvements */
-        @media (hover: none) and (pointer: coarse) {
-            .radio-label-std, .checkbox-label-std {
-                padding: 1.3rem 1.5rem;
-            }
-
-            .submit-button-std, .access-button, .logout-btn {
-                padding: 1.5rem 3rem;
-                min-height: 48px;
-            }
-
-            .form-group input, .form-group-std input, .form-group-std textarea {
-                padding: 1.3rem;
-                font-size: 16px; /* Prevents zoom on iOS */
-            }
-
-            .skip-button {
-                padding: 1rem 1.5rem;
-                min-height: 44px;
+            .response-title {
+                font-size: 2rem;
             }
         }
     </style>
@@ -1018,7 +921,7 @@
         <div class="welcome-content">
             <h1 class="welcome-title">Matthew & Anastasia</h1>
             <p class="welcome-subtitle">September 12, 2026</p>
-            <p class="welcome-venue">Villa Bettoni • Lake Garda, Italy</p>
+            <p class="welcome-venue">Gargnano • Lake Garda, Italy</p>
             <p>Welcome! Please enter your invitation email to continue.</p>
             <div class="form-group">
                 <label for="accessEmail">Email Address</label>
@@ -1028,6 +931,9 @@
             <div id="welcomeError" class="welcome-error">
                 <p><strong>Email not found.</strong> Please contact us if you need help.</p>
             </div>
+            <p style="margin-top: 1.5rem; text-align: center;">
+                <a href="#" onclick="showHelpContact()" style="color: #8b7d6b; text-decoration: none; font-size: 0.85rem;">Need help? Contact us</a>
+            </p>
         </div>
     </div>
 
@@ -1106,6 +1012,38 @@
                             <label>Any travel concerns or questions?</label>
                             <textarea id="travelQuestions" name="travelQuestions" 
                                       placeholder="Let us know if you have any questions about traveling to Lake Garda..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section-std" id="mailingAddressSection" style="display: none;">
+                        <h3 class="form-section-title-std">Mailing Address</h3>
+                        <p style="color: #666; margin-bottom: 1.5rem; font-size: 0.9rem; font-style: italic;">
+                            Please provide your mailing address for formal invitations and wedding correspondence.
+                        </p>
+                        <div class="form-group-std">
+                            <label>Street Address</label>
+                            <input type="text" id="streetAddress" name="streetAddress" 
+                                   placeholder="123 Main Street, Apt 4B">
+                        </div>
+                        <div class="form-row-std">
+                            <div class="form-group-std">
+                                <label>City</label>
+                                <input type="text" id="city" name="city" placeholder="City">
+                            </div>
+                            <div class="form-group-std">
+                                <label>State/Province</label>
+                                <input type="text" id="stateProvince" name="stateProvince" placeholder="State/Province">
+                            </div>
+                        </div>
+                        <div class="form-row-std">
+                            <div class="form-group-std">
+                                <label>Postal Code</label>
+                                <input type="text" id="postalCode" name="postalCode" placeholder="ZIP/Postal Code">
+                            </div>
+                            <div class="form-group-std">
+                                <label>Country</label>
+                                <input type="text" id="country" name="country" placeholder="Country">
+                            </div>
                         </div>
                     </div>
 
@@ -1216,6 +1154,9 @@
                         <p class="form-note-std">
                             Formal invitations with venue details, timings, and RSVP will follow closer to the date.
                         </p>
+                        <p class="help-contact" style="text-align: center; margin-top: 1rem;">
+                            <a href="#" onclick="showHelpContact()" style="color: #8b7d6b; text-decoration: none; font-size: 0.85rem;">Need help? Contact us</a>
+                        </p>
                     </div>
                 </div>
 
@@ -1264,14 +1205,53 @@
         <div class="std-footer">
             <button onclick="logout()" class="logout-btn">Logout</button>
             <p>Thank you for being part of our special day!</p>
+            <p style="font-size: 0.8rem; margin-top: 1rem; color: rgba(254, 252, 247, 0.7);">
+                Need help? <a href="#" onclick="showHelpContact()" style="color: #8b7d6b; text-decoration: underline;">Contact support</a>
+            </p>
         </div>
     </div>
 
     <div id="adminSection" class="admin-section">
-        <h4>Admin: Upload Guest List</h4>
-        <input type="file" id="guestListFile" accept=".xlsx,.xls,.csv">
-        <button type="button" id="uploadGuestList">Load Guest List</button>
-        <p style="font-size: 0.8rem;">Excel: Email, Primary_Name, Second_Name</p>
+        <h4>Wedding Admin Panel</h4>
+        
+        <div class="admin-tab-buttons">
+            <button onclick="showGuestListTab()" class="admin-tab-btn active" id="guestListTab">Guest List</button>
+            <button onclick="showResponsesTab()" class="admin-tab-btn" id="responsesTab">Responses</button>
+            <button onclick="showSettingsTab()" class="admin-tab-btn" id="settingsTab">Settings</button>
+        </div>
+
+        <!-- Guest List Upload Tab -->
+        <div id="guestListSection">
+            <h5>Upload Guest List</h5>
+            <input type="file" id="guestListFile" accept=".xlsx,.xls,.csv">
+            <button type="button" id="uploadGuestList">Load Guest List</button>
+            <p style="font-size: 0.8rem;">Excel: Email, Primary_Name, Second_Name, Has_Plus_One</p>
+            <div id="guestListStatus"></div>
+        </div>
+
+        <!-- Responses Management Tab -->
+        <div id="responsesSection" style="display: none;">
+            <h5>Guest Responses (<span id="responseCount">0</span>)</h5>
+            <div class="admin-buttons">
+                <button onclick="exportResponses()" class="admin-btn">Export All Responses</button>
+                <button onclick="exportAttending()" class="admin-btn">Export Attending Only</button>
+                <button onclick="clearAllResponses()" class="admin-btn danger">Clear All Data</button>
+            </div>
+            <div id="responsesList" class="responses-list"></div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settingsSection" style="display: none;">
+            <h5>Site Settings</h5>
+            <div class="settings-group">
+                <label style="color: #fefcf7; font-size: 0.8rem; display: block; margin-bottom: 0.5rem;">Help Contact Email</label>
+                <input type="email" id="helpEmailInput" style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; background: rgba(254, 252, 247, 0.9); border: 1px solid rgba(139, 125, 107, 0.3); color: #1a1a1a;">
+                <button onclick="updateHelpEmail()" class="admin-btn">Update Help Email</button>
+                <p style="font-size: 0.7rem; color: #8b7d6b; margin-top: 0.5rem; line-height: 1.4;">
+                    This email will be shown to guests who need help accessing the site. You can change this to your wedding planner's email later.
+                </p>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -1279,6 +1259,8 @@
         var guestList = [];
         var currentGuest = null;
         var savedResponse = null;
+        var allResponses = []; // Store all guest responses
+        var helpContactEmail = 'help@matthewandanastasia2026.com'; // Default help email
 
         window.onload = function() {
             // Initially hide the welcome page
@@ -1326,7 +1308,7 @@
             var urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('admin') === 'true') {
                 var adminEmail = prompt('Enter admin email to access guest list management:');
-                if (adminEmail === 'matt.j.johnson1992@gmail.com' || adminEmail === 'anastasia-email@gmail.com') {
+                if (adminEmail === 'matt.j.johnson1992@gmail.com' || adminEmail === '9339000@gmail.com') {
                     document.getElementById('adminSection').style.display = 'block';
                     alert('Admin access granted');
                 } else {
@@ -1471,14 +1453,17 @@
             for (var i = 0; i < responseRadios.length; i++) {
                 responseRadios[i].onchange = function() {
                     var travelSection = document.getElementById('travelSection');
+                    var mailingAddressSection = document.getElementById('mailingAddressSection');
                     var dietarySection = document.getElementById('dietarySection');
                     var regretsSection = document.getElementById('regretsSection');
                     if (this.value === 'planning-to-attend') {
                         travelSection.style.display = 'block';
+                        mailingAddressSection.style.display = 'block';
                         dietarySection.style.display = 'block';
                         regretsSection.style.display = 'none';
                     } else if (this.value === 'cannot-attend') {
                         travelSection.style.display = 'none';
+                        mailingAddressSection.style.display = 'none';
                         dietarySection.style.display = 'none';
                         regretsSection.style.display = 'block';
                     }
@@ -1621,6 +1606,25 @@
                 
                 setTimeout(function() {
                     savedResponse = responseData;
+                    
+                    // Add response to allResponses array with timestamp
+                    var responseWithTimestamp = Object.assign({}, responseData, {
+                        timestamp: new Date().toISOString(),
+                        submittedAt: new Date().toLocaleString()
+                    });
+                    
+                    // Check if response already exists and update, otherwise add new
+                    var existingIndex = allResponses.findIndex(r => r.email === responseData.email);
+                    if (existingIndex >= 0) {
+                        allResponses[existingIndex] = responseWithTimestamp;
+                    } else {
+                        allResponses.push(responseWithTimestamp);
+                    }
+                    
+                    // Update response count in admin panel
+                    updateResponseCount();
+                    updateResponsesList();
+                    
                     document.getElementById('responseForm').style.display = 'none';
                     document.getElementById('responseSubmitted').style.display = 'block';
                     document.getElementById('responseSubmitted').scrollIntoView({ behavior: 'smooth' });
@@ -1744,6 +1748,199 @@
             document.getElementById('accessEmail').value = '';
             currentGuest = null;
             savedResponse = null;
+        }
+
+        // Admin panel functions
+        function showGuestListTab() {
+            document.getElementById('guestListSection').style.display = 'block';
+            document.getElementById('responsesSection').style.display = 'none';
+            document.getElementById('settingsSection').style.display = 'none';
+            document.getElementById('guestListTab').classList.add('active');
+            document.getElementById('responsesTab').classList.remove('active');
+            document.getElementById('settingsTab').classList.remove('active');
+        }
+
+        function showResponsesTab() {
+            document.getElementById('guestListSection').style.display = 'none';
+            document.getElementById('responsesSection').style.display = 'block';
+            document.getElementById('settingsSection').style.display = 'none';
+            document.getElementById('responsesTab').classList.add('active');
+            document.getElementById('guestListTab').classList.remove('active');
+            document.getElementById('settingsTab').classList.remove('active');
+            updateResponsesList();
+        }
+
+        function showSettingsTab() {
+            document.getElementById('guestListSection').style.display = 'none';
+            document.getElementById('responsesSection').style.display = 'none';
+            document.getElementById('settingsSection').style.display = 'block';
+            document.getElementById('settingsTab').classList.add('active');
+            document.getElementById('guestListTab').classList.remove('active');
+            document.getElementById('responsesTab').classList.remove('active');
+            // Load current help email into input
+            document.getElementById('helpEmailInput').value = helpContactEmail;
+        }
+
+        function updateHelpEmail() {
+            var newEmail = document.getElementById('helpEmailInput').value.trim();
+            if (!newEmail) {
+                alert('Please enter a valid email address');
+                return;
+            }
+            
+            // Basic email validation
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(newEmail)) {
+                alert('Please enter a valid email format');
+                return;
+            }
+            
+            helpContactEmail = newEmail;
+            alert('Help contact email updated to: ' + newEmail);
+        }
+
+        function showHelpContact() {
+            var message = 'If you need assistance with the wedding website, please contact us at:\n\n' + helpContactEmail;
+            alert(message);
+        }
+
+        function updateResponseCount() {
+            var countElement = document.getElementById('responseCount');
+            if (countElement) {
+                countElement.textContent = allResponses.length;
+            }
+        }
+
+        function updateResponsesList() {
+            var listElement = document.getElementById('responsesList');
+            if (!listElement) return;
+
+            if (allResponses.length === 0) {
+                listElement.innerHTML = '<div style="padding: 1rem; text-align: center; color: #8b7d6b;">No responses yet</div>';
+                return;
+            }
+
+            var html = '';
+            allResponses.forEach(function(response, index) {
+                var statusText = response.attending === 'planning-to-attend' ? '✓ Attending' : '✗ Cannot Attend';
+                var statusColor = response.attending === 'planning-to-attend' ? '#4CAF50' : '#f44336';
+                
+                // Count total guests (primary + second if exists)
+                var guestCount = 1;
+                if (response.secondGuestName && response.secondGuestName.trim() !== '') {
+                    guestCount = 2;
+                }
+                
+                var guestNames = response.primaryGuestName || 'Unknown Guest';
+                if (response.secondGuestName && response.secondGuestName.trim() !== '') {
+                    guestNames += ' & ' + response.secondGuestName;
+                }
+                
+                html += '<div class="response-item">';
+                html += '<div style="font-weight: bold;">' + guestNames + '</div>';
+                html += '<div style="color: ' + statusColor + '; font-size: 0.7rem;">' + statusText;
+                if (response.attending === 'planning-to-attend') {
+                    html += ' (' + guestCount + ' guest' + (guestCount > 1 ? 's' : '') + ')';
+                }
+                html += '</div>';
+                html += '<div style="color: #8b7d6b; font-size: 0.7rem;">' + response.submittedAt + '</div>';
+                html += '</div>';
+            });
+
+            listElement.innerHTML = html;
+        }
+
+        function exportResponses() {
+            if (allResponses.length === 0) {
+                alert('No responses to export');
+                return;
+            }
+
+            // Create CSV content with mailing address
+            var csvContent = 'Email,Primary Guest,Second Guest,Attending,Visited Lake Garda,Travel Questions,Street Address,City,State/Province,Postal Code,Country,Primary Dietary,Second Dietary,Regrets Message,Submitted At\n';
+            
+            allResponses.forEach(function(response) {
+                var mailingAddr = response.mailingAddress || {};
+                var row = [
+                    response.email || '',
+                    response.primaryGuestName || '',
+                    response.secondGuestName || '',
+                    response.attending || '',
+                    response.visitedLakeGarda || '',
+                    (response.travelQuestions || '').replace(/"/g, '""'),
+                    mailingAddr.street || '',
+                    mailingAddr.city || '',
+                    mailingAddr.stateProvince || '',
+                    mailingAddr.postalCode || '',
+                    mailingAddr.country || '',
+                    (response.primaryDietaryRestrictions || []).join('; '),
+                    (response.secondDietaryRestrictions || []).join('; '),
+                    (response.regretsMessage || '').replace(/"/g, '""'),
+                    response.submittedAt || ''
+                ];
+                csvContent += row.map(field => '"' + field + '"').join(',') + '\n';
+            });
+
+            // Download CSV file
+            var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            var link = document.createElement('a');
+            var url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'wedding_rsvp_responses_' + new Date().toISOString().split('T')[0] + '.csv');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function exportAttending() {
+            var attendingResponses = allResponses.filter(r => r.attending === 'planning-to-attend');
+            
+            if (attendingResponses.length === 0) {
+                alert('No attending guests to export');
+                return;
+            }
+
+            // Create CSV content for attending guests only with mailing address
+            var csvContent = 'Email,Primary Guest,Second Guest,Visited Lake Garda,Travel Questions,Street Address,City,State/Province,Postal Code,Country,Primary Dietary,Second Dietary,Submitted At\n';
+            
+            attendingResponses.forEach(function(response) {
+                var mailingAddr = response.mailingAddress || {};
+                var row = [
+                    response.email || '',
+                    response.primaryGuestName || '',
+                    response.secondGuestName || '',
+                    response.visitedLakeGarda || '',
+                    (response.travelQuestions || '').replace(/"/g, '""'),
+                    mailingAddr.street || '',
+                    mailingAddr.city || '',
+                    mailingAddr.stateProvince || '',
+                    mailingAddr.postalCode || '',
+                    mailingAddr.country || '',
+                    (response.primaryDietaryRestrictions || []).join('; '),
+                    (response.secondDietaryRestrictions || []).join('; '),
+                    response.submittedAt || ''
+                ];
+                csvContent += row.map(field => '"' + field + '"').join(',') + '\n';
+            });
+
+            // Download CSV file
+            var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            var link = document.createElement('a');
+            var url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'wedding_attending_guests_' + new Date().toISOString().split('T')[0] + '.csv');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function clearAllResponses() {
+            if (confirm('Are you sure you want to clear all response data? This cannot be undone.')) {
+                allResponses = [];
+                updateResponseCount();
+                updateResponsesList();
+                alert('All response data cleared');
+            }
         }
     </script>
 </body>
