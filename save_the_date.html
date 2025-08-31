@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Save the Date</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 60px 20px;
+      font-family: 'Inter', sans-serif;
+      color: #3d4f63;
+      background: #c3bcae url('https://www.transparenttextures.com/patterns/old-wall.png') repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    .email-container {
+      max-width: 650px;
+      width: 100%;
+      margin: 30px auto;
+      padding: 50px 40px;
+      text-align: center;
+      position: relative;
+      
+      /* --- BACKGROUND IMAGE & OVERLAY --- */
+      background: 
+        linear-gradient(rgba(249, 246, 241, 0.92), rgba(249, 246, 241, 0.92)),
+        /* This relative path will now work once GitHub Pages is enabled. */
+        /* Ensure your image file is named correctly. */
+        url('images/bettoni_lakefront_drawing.png') no-repeat center center;
+      background-size: cover;
+      
+      border: 1px solid #e0d9cd;
+      border-radius: 4px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    /* The "Rolled" Parchment Effect */
+    .email-container::before,
+    .email-container::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 40px;
+      background: linear-gradient(to right, #f3ede2, #fff, #f3ede2);
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+      z-index: -1;
+    }
+
+    .email-container::before {
+      top: -20px;
+      border-radius: 50% / 15px;
+    }
+
+    .email-container::after {
+      bottom: -20px;
+      border-radius: 50% / 15px;
+    }
+
+    h1 {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 2.5rem;
+      margin-bottom: 5px;
+      color: #293b4d;
+      font-weight: 600;
+    }
+
+    .date {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1.4rem;
+      margin: 15px 0 5px;
+      color: #8b7d6b;
+    }
+
+    .location {
+      font-size: 1.1rem;
+      margin-bottom: 25px;
+      color: #8b7d6b;
+    }
+
+    .description {
+      font-size: 1rem;
+      margin: 25px 0;
+      line-height: 1.7;
+    }
+
+    .website {
+      display: inline-block;
+      margin-top: 25px;
+      background: #8b7d6b;
+      color: #fefcf7;
+      text-decoration: none;
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .website:hover {
+      background: #7a6c5e;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .footer {
+      margin-top: 40px;
+      font-size: 0.9rem;
+      color: #8b7d6b;
+      border-top: 1px solid rgba(139, 125, 107, 0.3);
+      padding-top: 25px;
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <h1>Matthew & Anastasia</h1>
+    <div class="date">Saturday, 12 September 2026</div>
+    <div class="location">Gargnano, Lake Garda, Italy</div>
+
+    <div class="description">
+      An evening on the Italian lakeshore in black tie, among family and friends.  
+      <br><br>
+      Formal invitation to follow.  
+      <br>
+      Further details available at:
+    </div>
+
+    <a href="#" class="website" onclick="event.preventDefault();">
+      matthewandanastasia2026.com
+    </a>
+
+    <div class="footer">
+      Please save the date — more to come.
+    </div>
+  </div>
+</body>
+</html>
