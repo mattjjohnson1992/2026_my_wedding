@@ -47,8 +47,6 @@
   object-fit: cover;   /* crops to fill without letterboxing */
 }
 
-        }
-
         .video-overlay {
   position: absolute;
   top: 0;
@@ -1307,7 +1305,23 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore-compat.js"></script>
+<script>
+    const firebaseConfig = {
+    apiKey: "AIzaSyA2IFhPdWaLkXVavZYygSmFrZdrwVg9XIg",
+    authDomain: "my-wedding-3b5d9.firebaseapp.com",
+    projectId: "my-wedding-3b5d9",
+    storageBucket: "my-wedding-3b5d9.appspot.com",
+    messagingSenderId: "93330973669",
+    appId: "1:93330973669:web:f44f5704ff037acac23ec",
+    measurementId: "G-1539VCVG4C"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
+<script>
+    let responsesUnsub = null; // live listener cleanup
         var guestList = [];
         var currentGuest = null;
         var savedResponse = null;
@@ -1371,55 +1385,100 @@
           }
         }
 
-        function handleFileUpload() {
-            var fileInput = document.getElementById('guestListFile');
-            var file = fileInput.files[0];
-            if (!file) {
-                alert('Please select a file first');
-                return;
-            }
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    var data = new Uint8Array(e.target.result);
-                    var workbook = XLSX.read(data, { type: 'array' });
-                    var worksheet = workbook.Sheets[workbook.SheetNames[0]];
-                    guestList = XLSX.utils.sheet_to_json(worksheet);
-                    alert('Loaded ' + guestList.length + ' guests successfully!');
-                } catch (error) {
-                    alert('Error reading file');
-                }
-            };
-            reader.readAsArrayBuffer(file);
-        }
+        async function handleFileUpload() {
+  const fileInput = document.getElementById('guestListFile');
+  const file = fileInput.files[0];
+  if (!file) {
+    alert('Please select a file first');
+    return;
+  }
 
-        function handleEmailAccess() {
-            var email = document.getElementById('accessEmail').value.trim().toLowerCase();
-            if (!email) {
-                alert('Please enter an email');
-                return;
-            }
-            if (guestList.length === 0) {
-                alert('Please upload guest list first');
-                return;
-            }
-            var guest = null;
-            for (var i = 0; i < guestList.length; i++) {
-                // accept "Email" or "email" headers and trim cell values
-                var cell = (guestList[i].Email || guestList[i].email || '').toString().trim().toLowerCase();
-                if (cell && cell === email) {
-                    guest = guestList[i];
-                    break;
-                }
-            }
-            if (!guest) {
-                document.getElementById('welcomeError').style.display = 'block';
-                return;
-            }
-            currentGuest = guest;
-            document.getElementById('welcomePage').style.display = 'none';
-            document.getElementById('mainWebsite').style.display = 'block';
-            setupSaveTheDatePage();
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    try {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      const newGuestList = XLSX.utils.sheet_to_json(worksheet);
+
+      if (!newGuestList.length) {
+        alert('The file appears to be empty');
+        return;
+      }
+      if (!('Email' in newGuestList[0])) {
+        alert('Error: Email column required (Email, Primary_Name, Second_Name, Has_Plus_One)');
+        return;
+      }
+
+      const batch = db.batch();
+      newGuestList.forEach(row => {
+        const email = (row.Email || '').toLowerCase().trim();
+        if (!email) return;
+        const ref = db.collection('guestList').doc(email);
+        batch.set(ref, {
+          primary_name: row.Primary_Name || '',
+          second_name: row.Second_Name || '',
+          has_plus_one:
+            String(row.Has_Plus_One || '').toLowerCase() === 'yes' || row.Has_Plus_One === true,
+          invited: true,
+          updated_at: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+      });
+
+      await batch.commit();
+
+      // Optional: keep local copy for nice UX this session
+      guestList = newGuestList;
+      alert('Loaded ' + newGuestList.length + ' guests to the server successfully!');
+    } catch (err) {
+      console.error(err);
+      alert('Error reading file');
+    }
+  };
+  reader.readAsArrayBuffer(file);
+      }
+
+        async function handleEmailAccess() {
+  const email = (document.getElementById('accessEmail').value || '').trim().toLowerCase();
+  if (!email) {
+    alert('Please enter an email');
+    return;
+  }
+
+  try {
+    const doc = await db.collection('guestList').doc(email).get();
+
+    if (!doc.exists) {
+      // fallback: if you just uploaded in this session
+      const local = (guestList || []).find(g => (g.Email || '').toLowerCase().trim() === email);
+      if (!local) {
+        document.getElementById('welcomeError').style.display = 'block';
+        return;
+      }
+      currentGuest = {
+        Email: local.Email,
+        Primary_Name: local.Primary_Name || '',
+        Second_Name: local.Second_Name || '',
+        Has_Plus_One:
+          String(local.Has_Plus_One || '').toLowerCase() === 'yes' || local.Has_Plus_One === true
+      };
+    } else {
+      const d = doc.data();
+      currentGuest = {
+        Email: email,
+        Primary_Name: d.primary_name || '',
+        Second_Name: d.second_name || '',
+        Has_Plus_One: !!d.has_plus_one
+      };
+    }
+
+    document.getElementById('welcomePage').style.display = 'none';
+    document.getElementById('mainWebsite').style.display = 'block';
+    setupSaveTheDatePage();
+  } catch (err) {
+    console.error(err);
+    alert('There was a problem checking your invitation. Please try again.');
+  }
         }
 
         function setupSaveTheDatePage() {
@@ -1431,7 +1490,7 @@
                 document.getElementById('secondGuestNameSTD').placeholder = 'Enter your partner\'s preferred name';
                 document.getElementById('secondGuestDietarySection').style.display = 'block';
                 updateDietaryLabels();
-            } else if (currentGuest.Has_Plus_One === 'Yes' || currentGuest.Has_Plus_One === true) {
+            } else if (currentGuest.Has_Plus_One === true) {
                 document.getElementById('secondGuestSTD').style.display = 'block';
                 document.getElementById('secondGuestNameSTD').value = '';
                 document.getElementById('secondGuestNameSTD').placeholder = 'Please include name of your plus one';
@@ -1494,7 +1553,7 @@
                 var weddingDate = new Date('September 12, 2026 16:00:00').getTime();
                 var now = new Date().getTime();
                 var timeLeft = weddingDate - now;
-                var days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                var days = Math.max(0, Math.floor(timeLeft / (1000*60*60*24)));
                 var daysElement = document.getElementById('daysCounter');
                 if (daysElement) {
                     daysElement.textContent = days;
@@ -1606,89 +1665,86 @@
                 secondGuestField.onkeyup = updateDietaryLabels;
             }
 
-            document.getElementById('submitResponse').onclick = function() {
-                this.disabled = true;
-                this.textContent = 'Sending...';
-                
-                var responseData = {
-                    guest: currentGuest.Primary_Name,
-                    email: currentGuest.Email
-                };
-                
-                var initialResponse = document.querySelector('input[name="initialResponse"]:checked');
-                if (initialResponse) {
-                    responseData.attending = initialResponse.value;
-                }
-                
-                responseData.primaryGuestName = document.getElementById('primaryGuestSTD').value;
-                if (document.getElementById('secondGuestSTD').style.display !== 'none') {
-                    responseData.secondGuestName = document.getElementById('secondGuestNameSTD').value;
-                }
-                
-                if (responseData.attending === 'planning-to-attend') {
-                    var visitedBefore = document.querySelector('input[name="visitedBefore"]:checked');
-                    if (visitedBefore) {
-                        responseData.visitedLakeGarda = visitedBefore.value;
-                    }
-                    
-                    responseData.travelQuestions = document.getElementById('travelQuestions').value;
-                    
-                    var selectedPrimaryDietary = [];
-                    var primaryDietaryCheckboxes = document.querySelectorAll('input[name="dietaryPrimary"]:checked');
-                    for (var i = 0; i < primaryDietaryCheckboxes.length; i++) {
-                        selectedPrimaryDietary.push(primaryDietaryCheckboxes[i].value);
-                    }
-                    responseData.primaryDietaryRestrictions = selectedPrimaryDietary;
-                    
-                    if (selectedPrimaryDietary.includes('other')) {
-                        responseData.primaryOtherDietary = document.getElementById('otherDietaryPrimary').value;
-                    }
+           document.getElementById('submitResponse').onclick = async function () {
+  this.disabled = true;
+  this.textContent = 'Sending...';
 
-                    if (document.getElementById('secondGuestDietarySection').style.display !== 'none') {
-                        var selectedSecondDietary = [];
-                        var secondDietaryCheckboxes = document.querySelectorAll('input[name="dietarySecond"]:checked');
-                        for (var i = 0; i < secondDietaryCheckboxes.length; i++) {
-                            selectedSecondDietary.push(secondDietaryCheckboxes[i].value);
-                        }
-                        responseData.secondDietaryRestrictions = selectedSecondDietary;
-                        
-                        if (selectedSecondDietary.includes('other')) {
-                            responseData.secondOtherDietary = document.getElementById('otherDietarySecond').value;
-                        }
-                    }
-                } else {
-                    responseData.regretsMessage = document.getElementById('regretsMessage').value;
-                }
-                
-                setTimeout(function() {
-                    savedResponse = responseData;
-                    
-                    // Add response to allResponses array with timestamp
-                    var responseWithTimestamp = Object.assign({}, responseData, {
-                        timestamp: new Date().toISOString(),
-                        submittedAt: new Date().toLocaleString()
-                    });
-                    
-                    // Check if response already exists and update, otherwise add new
-                    var existingIndex = allResponses.findIndex(r => r.email === responseData.email);
-                    if (existingIndex >= 0) {
-                        allResponses[existingIndex] = responseWithTimestamp;
-                    } else {
-                        allResponses.push(responseWithTimestamp);
-                    }
-                    
-                    // Update response count in admin panel
-                    updateResponseCount();
-                    updateResponsesList();
-                    
-                    document.getElementById('responseForm').style.display = 'none';
-                    document.getElementById('responseSubmitted').style.display = 'block';
-                    document.getElementById('responseSubmitted').scrollIntoView({ behavior: 'smooth' });
-                    var submitBtn = document.getElementById('submitResponse');
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Send Response';
-                }, 1000);
-            };
+  const responseData = {
+    guest: currentGuest.Primary_Name,
+    email: currentGuest.Email
+  };
+
+  const initialResponse = document.querySelector('input[name="initialResponse"]:checked');
+  if (initialResponse) responseData.attending = initialResponse.value;
+
+  responseData.primaryGuestName = document.getElementById('primaryGuestSTD').value;
+  if (document.getElementById('secondGuestSTD').style.display !== 'none') {
+    responseData.secondGuestName = document.getElementById('secondGuestNameSTD').value;
+  }
+
+  // --- NEW: always capture mailing address (so exports work for both attend/can't attend) ---
+  responseData.mailingAddress = {
+    street: document.getElementById('streetAddress').value || '',
+    city: document.getElementById('city').value || '',
+    stateProvince: document.getElementById('stateProvince').value || '',
+    postalCode: document.getElementById('postalCode').value || '',
+    country: document.getElementById('country').value || ''
+  };
+  // -----------------------------------------------------------------------------------------
+
+  if (responseData.attending === 'planning-to-attend') {
+    const visitedBefore = document.querySelector('input[name="visitedBefore"]:checked');
+    if (visitedBefore) responseData.visitedLakeGarda = visitedBefore.value;
+
+    responseData.travelQuestions = document.getElementById('travelQuestions').value;
+
+    const primaryDietary = [];
+    document.querySelectorAll('input[name="dietaryPrimary"]:checked')
+      .forEach(cb => primaryDietary.push(cb.value));
+    responseData.primaryDietaryRestrictions = primaryDietary;
+    if (primaryDietary.includes('other')) {
+      responseData.primaryOtherDietary = document.getElementById('otherDietaryPrimary').value;
+    }
+
+    if (document.getElementById('secondGuestDietarySection').style.display !== 'none') {
+      const secondDietary = [];
+      document.querySelectorAll('input[name="dietarySecond"]:checked')
+        .forEach(cb => secondDietary.push(cb.value));
+      responseData.secondDietaryRestrictions = secondDietary;
+      if (secondDietary.includes('other')) {
+        responseData.secondOtherDietary = document.getElementById('otherDietarySecond').value;
+      }
+    }
+  } else {
+    responseData.regretsMessage = document.getElementById('regretsMessage').value;
+  }
+
+  try {
+    const emailKey = (responseData.email || '').toLowerCase().trim();
+    await db.collection('responses').doc(emailKey).set(
+      {
+        ...responseData,
+        submittedAt: new Date().toLocaleString(),
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      },
+      { merge: true }
+    );
+
+    // keep local UX behavior
+    savedResponse = responseData;
+
+    document.getElementById('responseForm').style.display = 'none';
+    document.getElementById('responseSubmitted').style.display = 'block';
+    document.getElementById('responseSubmitted').scrollIntoView({ behavior: 'smooth' });
+  } catch (err) {
+    console.error(err);
+    alert('There was a problem saving your response. Please try again.');
+  } finally {
+    const submitBtn = document.getElementById('submitResponse');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Send Response';
+  }
+};
         }
 
         function showSubmittedState() {
@@ -1798,44 +1854,74 @@
         }
 
         function logout() {
+        if (responsesUnsub) { responsesUnsub(); responsesUnsub = null; }  // ← add
             document.getElementById('mainWebsite').style.display = 'none';
             document.getElementById('welcomePage').style.display = 'flex';
             document.getElementById('welcomeError').style.display = 'none';
             document.getElementById('accessEmail').value = '';
             currentGuest = null;
             savedResponse = null;
-        }
+}
 
         // Admin panel functions
-        function showGuestListTab() {
+       function showGuestListTab() {
+        if (responsesUnsub) { responsesUnsub(); responsesUnsub = null; }  // ← add
             document.getElementById('guestListSection').style.display = 'block';
             document.getElementById('responsesSection').style.display = 'none';
             document.getElementById('settingsSection').style.display = 'none';
             document.getElementById('guestListTab').classList.add('active');
             document.getElementById('responsesTab').classList.remove('active');
             document.getElementById('settingsTab').classList.remove('active');
-        }
+}
 
         function showResponsesTab() {
+  // UI toggles
             document.getElementById('guestListSection').style.display = 'none';
             document.getElementById('responsesSection').style.display = 'block';
             document.getElementById('settingsSection').style.display = 'none';
             document.getElementById('responsesTab').classList.add('active');
             document.getElementById('guestListTab').classList.remove('active');
             document.getElementById('settingsTab').classList.remove('active');
-            updateResponsesList();
-        }
 
-        function showSettingsTab() {
-            document.getElementById('guestListSection').style.display = 'none';
-            document.getElementById('responsesSection').style.display = 'none';
-            document.getElementById('settingsSection').style.display = 'block';
-            document.getElementById('settingsTab').classList.add('active');
-            document.getElementById('guestListTab').classList.remove('active');
-            document.getElementById('responsesTab').classList.remove('active');
-            // Load current help email into input
-            document.getElementById('helpEmailInput').value = helpContactEmail;
-        }
+  // stop any previous listener
+  if (responsesUnsub) {
+    responsesUnsub();
+    responsesUnsub = null;
+  }
+
+  // live view of responses, newest first
+  responsesUnsub = db
+    .collection('responses')
+    .orderBy('timestamp', 'desc')
+    .onSnapshot(
+      (snapshot) => {
+        allResponses = snapshot.docs.map((doc) => {
+          const d = doc.data() || {};
+          const submitted =
+            d.submittedAt ||
+            (d.timestamp && d.timestamp.toDate ? d.timestamp.toDate().toLocaleString() : '');
+          return { email: doc.id, ...d, submittedAt: submitted };
+        });
+        updateResponseCount();
+        updateResponsesList();
+      },
+      (err) => {
+        console.error('Failed to read responses:', err);
+        alert('Could not load responses from the server.');
+      }
+    );
+}
+
+    function showSettingsTab() {
+        if (responsesUnsub) { responsesUnsub(); responsesUnsub = null; }  // ← add
+        document.getElementById('guestListSection').style.display = 'none';
+        document.getElementById('responsesSection').style.display = 'none';
+        document.getElementById('settingsSection').style.display = 'block';
+        document.getElementById('settingsTab').classList.add('active');
+        document.getElementById('guestListTab').classList.remove('active');
+        document.getElementById('responsesTab').classList.remove('active');
+        document.getElementById('helpEmailInput').value = helpContactEmail;
+}
 
         function updateHelpEmail() {
             var newEmail = document.getElementById('helpEmailInput').value.trim();
@@ -1990,14 +2076,29 @@
             document.body.removeChild(link);
         }
 
-        function clearAllResponses() {
-            if (confirm('Are you sure you want to clear all response data? This cannot be undone.')) {
-                allResponses = [];
-                updateResponseCount();
-                updateResponsesList();
-                alert('All response data cleared');
-            }
-        }
+        async function clearAllResponses() {
+  if (!confirm('Are you sure you want to delete ALL responses from the server? This cannot be undone.')) {
+    return;
+  }
+  try {
+    const pageSize = 200;
+    while (true) {
+      const snap = await db.collection('responses').limit(pageSize).get();
+      if (snap.empty) break;
+      const batch = db.batch();
+      snap.docs.forEach((doc) => batch.delete(doc.ref));
+      await batch.commit();
+      if (snap.size < pageSize) break;
+    }
+    allResponses = [];
+    updateResponseCount();
+    updateResponsesList();
+    alert('All responses cleared from the server.');
+  } catch (err) {
+    console.error(err);
+    alert('Failed to clear responses. Please try again.');
+  }
+}
     </script>
 
     <!-- Easy Admin Access Button (moved inside <body> and placed last) -->
