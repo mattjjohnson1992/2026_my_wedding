@@ -38,45 +38,54 @@
         }
 
         .video-intro iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  object-fit: cover;   /* crops to fill without letterboxing */
+}
+
         }
 
         .video-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                to bottom,
-                rgba(0, 0, 0, 0.1) 0%,
-                rgba(0, 0, 0, 0.3) 100%
-            );
-            display: flex;
-            align-items: flex-start;
-            justify-content: flex-end;
-            padding: 2rem;
-            box-sizing: border-box;
-        }
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  /* ↓ changed layout from flex to block so skip button can position freely */
+  display: block;
+  padding: 2rem;
+  box-sizing: border-box;
+  z-index: 2; /* ensure overlay sits above video */
+}
 
-        .skip-button {
-            background: rgba(254, 252, 247, 0.9);
-            color: #1a1a1a;
-            border: 1px solid rgba(139, 125, 107, 0.3);
-            padding: 0.8rem 1.5rem;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            border-radius: 2px;
-        }
-
+.skip-button {
+  position: absolute;     /* added */
+  top: 20px;              /* added */
+  right: 20px;            /* added */
+  z-index: 3;             /* added */
+  background: rgba(254, 252, 247, 0.9);
+  color: #1a1a1a;
+  border: 1px solid rgba(139, 125, 107, 0.3);
+  padding: 0.8rem 1.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
         .skip-button:hover {
             background: rgba(254, 252, 247, 1);
             transform: translateY(-1px);
@@ -894,6 +903,49 @@
                 font-size: 2rem;
             }
         }
+
+        /* Always-visible Admin Access Button — visible on dark backgrounds */
+        /* Admin button — present but invisible until intro ends */
+.admin-access-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+
+  background: rgba(254, 252, 247, 0.9);
+  color: #1a1a1a;
+  border: 1px solid rgba(139, 125, 107, 0.4);
+
+  padding: 0.9rem 1.4rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 500;
+
+  z-index: 99999;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+
+  /* 👇 fade-in setup */
+  opacity: 0;                 /* hidden initially */
+  pointer-events: none;       /* not clickable while hidden */
+  transition: opacity 400ms ease;
+}
+
+/* When intro ends, we’ll add this class to fade it in */
+.admin-access-btn.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+        .admin-access-btn:hover {
+            background: rgba(139, 125, 107, 1); /* Champagne gold on hover */
+            color: #fefcf7; /* Ivory text */
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -1269,7 +1321,7 @@
             // Setup video intro
             setupVideoIntro();
             
-            checkForAdminAccess();
+            // (Removed the undefined checkForAdminAccess(); call)
             document.getElementById('uploadGuestList').onclick = handleFileUpload;
             document.getElementById('accessButton').onclick = handleEmailAccess;
         };
@@ -1280,13 +1332,17 @@
             
             // Skip video function
             function skipToWelcome() {
-                videoIntro.classList.add('fade-out');
-                setTimeout(function() {
-                    videoIntro.style.display = 'none';
-                    document.getElementById('welcomePage').classList.remove('hidden');
-                    document.getElementById('welcomePage').style.display = 'flex';
-                }, 1000);
-            }
+    videoIntro.classList.add('fade-out');
+    setTimeout(function() {
+        videoIntro.style.display = 'none';
+        document.getElementById('welcomePage').classList.remove('hidden');
+        document.getElementById('welcomePage').style.display = 'flex';
+
+        // 👇 new line: fade the Admin button in
+        document.getElementById('adminAccessBtn').classList.add('visible');
+    }, 1000);
+}
+
             
             // Skip button click
             skipButton.onclick = skipToWelcome;
@@ -1304,17 +1360,15 @@
             });
         }
 
-        function checkForAdminAccess() {
-            var urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('admin') === 'true') {
-                var adminEmail = prompt('Enter admin email to access guest list management:');
-                if (adminEmail === 'matt.j.johnson1992@gmail.com' || adminEmail === '9339000@gmail.com') {
-                    document.getElementById('adminSection').style.display = 'block';
-                    alert('Admin access granted');
-                } else {
-                    alert('Invalid admin email');
-                }
-            }
+        function showAdminLogin() {
+          var adminEmail = prompt('Enter admin email to access guest list management:');
+          if (adminEmail === 'matt.j.johnson1992@gmail.com' || adminEmail === '9339000@gmail.com') {
+              document.getElementById('adminSection').style.display = 'block';
+              document.getElementById('adminAccessBtn').style.display = 'none';
+              alert('Admin access granted');
+          } else if (adminEmail) {
+              alert('Invalid admin email');
+          }
         }
 
         function handleFileUpload() {
@@ -1340,7 +1394,7 @@
         }
 
         function handleEmailAccess() {
-            var email = document.getElementById('accessEmail').value.trim();
+            var email = document.getElementById('accessEmail').value.trim().toLowerCase();
             if (!email) {
                 alert('Please enter an email');
                 return;
@@ -1351,7 +1405,9 @@
             }
             var guest = null;
             for (var i = 0; i < guestList.length; i++) {
-                if (guestList[i].Email && guestList[i].Email.toLowerCase() === email.toLowerCase()) {
+                // accept "Email" or "email" headers and trim cell values
+                var cell = (guestList[i].Email || guestList[i].email || '').toString().trim().toLowerCase();
+                if (cell && cell === email) {
                     guest = guestList[i];
                     break;
                 }
@@ -1943,5 +1999,10 @@
             }
         }
     </script>
+
+    <!-- Easy Admin Access Button (moved inside <body> and placed last) -->
+    <button id="adminAccessBtn" class="admin-access-btn" onclick="showAdminLogin()">
+      Admin
+    </button>
 </body>
 </html>
