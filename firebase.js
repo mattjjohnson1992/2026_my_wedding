@@ -15,6 +15,11 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // Listen for response submission after DOM loaded
+// Expose Firestore helpers to global window for index.html
+window.db = db;
+window.collection = collection;
+window.addDoc = addDoc;
+
 window.addEventListener('DOMContentLoaded', () => {
   const submitBtn = document.getElementById('submitResponse');
   if (submitBtn) {
